@@ -1,0 +1,10 @@
+dm-control
+dm-env
+dm-tree
+glfw
+mujoco
+mujoco-python-viewer
+pycollada
+seaborn
+transformations
+trimesh
