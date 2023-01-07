@@ -18,7 +18,7 @@
   <link name="base_link">
     <visual>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_base.stl"/>
+        <mesh filename="motoman_base_v.stl"/>
       </geometry>
       <material name="blue">
         <color rgba="0 0 1 1"/>
@@ -26,7 +26,7 @@
     </visual>
     <collision>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_base.stl"/>
+        <mesh filename="motoman_base.stl"/>
       </geometry>
       <material name="yellow">
         <color rgba="0 1 1 1"/>
@@ -56,7 +56,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_b1.stl"/>
+        <mesh filename="motoman_axis_b1_v.stl"/>
       </geometry>
       <material name="silver">
         <color rgba="0.8 0.8 0.8 1"/>
@@ -65,7 +65,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_b1_remeshed.stl"/>
+        <mesh filename="motoman_axis_b1_remeshed.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_b1.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -81,7 +81,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_s.stl"/>
+        <mesh filename="motoman_axis_s_v.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/visual/motoman_axis_s.stl"/> -->
       </geometry>
       <material name="blue"/>
@@ -92,7 +92,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_s.stl"/>
+        <mesh filename="motoman_axis_s.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_s.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -107,7 +107,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_l.stl"/>
+        <mesh filename="motoman_axis_l_v.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/visual/motoman_axis_l.stl"/> -->
       </geometry>
       <material name="silver"/>
@@ -115,7 +115,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_l.stl"/>
+        <mesh filename="motoman_axis_l.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_l.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -130,7 +130,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_e.stl"/>
+        <mesh filename="motoman_axis_e_v.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/visual/motoman_axis_e.stl"/> -->
       </geometry>
       <material name="blue"/>
@@ -138,7 +138,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_e.stl"/>
+        <mesh filename="motoman_axis_e.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_e.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -153,7 +153,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_u.stl"/>
+        <mesh filename="motoman_axis_u_v.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/visual/motoman_axis_u.stl"/> -->
       </geometry>
       <material name="silver"/>
@@ -161,7 +161,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_u.stl"/>
+        <mesh filename="motoman_axis_u.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_u.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -176,7 +176,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_r.stl"/>
+        <mesh filename="motoman_axis_r_v.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/visual/motoman_axis_r.stl"/> -->
       </geometry>
       <material name="blue"/>
@@ -184,7 +184,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_r.stl"/>
+        <mesh filename="motoman_axis_r.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_r.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -199,7 +199,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_b.stl"/>
+        <mesh filename="motoman_axis_b_v.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/visual/motoman_axis_b.stl"/> -->
       </geometry>
       <material name="silver"/>
@@ -207,7 +207,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_b_remeshed.stl"/>
+        <mesh filename="motoman_axis_b_remeshed.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_b.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -221,14 +221,14 @@
   <link name="arm_left_link_7_t">
     <visual>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_t.stl"/>
+        <mesh filename="motoman_axis_t_v.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/visual/motoman_axis_t.stl"/> -->
       </geometry>
       <material name="blue"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_t.stl"/>
+        <mesh filename="motoman_axis_t.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_t.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -309,7 +309,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_s.stl"/>
+        <mesh filename="motoman_axis_s_v.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/visual/motoman_axis_s.stl"/> -->
       </geometry>
       <material name="blue">
@@ -319,7 +319,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_s.stl"/>
+        <mesh filename="motoman_axis_s.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_s.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -334,7 +334,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_l.stl"/>
+        <mesh filename="motoman_axis_l_v.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/visual/motoman_axis_l.stl"/> -->
       </geometry>
       <material name="silver"/>
@@ -342,7 +342,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_l.stl"/>
+        <mesh filename="motoman_axis_l.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_l.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -357,7 +357,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_e.stl"/>
+        <mesh filename="motoman_axis_e_v.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/visual/motoman_axis_e.stl"/> -->
       </geometry>
       <material name="blue"/>
@@ -365,7 +365,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_e.stl"/>
+        <mesh filename="motoman_axis_e.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_e.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -380,7 +380,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_u.stl"/>
+        <mesh filename="motoman_axis_u_v.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/visual/motoman_axis_u.stl"/> -->
       </geometry>
       <material name="silver"/>
@@ -388,7 +388,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_u.stl"/>
+        <mesh filename="motoman_axis_u.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_u.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -403,7 +403,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_r.stl"/>
+        <mesh filename="motoman_axis_r_v.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/visual/motoman_axis_r.stl"/> -->
       </geometry>
       <material name="blue"/>
@@ -411,7 +411,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_r.stl"/>
+        <mesh filename="motoman_axis_r.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_r.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -426,7 +426,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_b.stl"/>
+        <mesh filename="motoman_axis_b_v.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/visual/motoman_axis_b.stl"/> -->
       </geometry>
       <material name="silver"/>
@@ -434,7 +434,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_b_remeshed.stl"/>
+        <mesh filename="motoman_axis_b_remeshed.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_b.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -448,14 +448,14 @@
   <link name="arm_right_link_7_t">
     <visual>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/motoman_axis_t.stl"/>
+        <mesh filename="motoman_axis_t_v.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/visual/motoman_axis_t.stl"/> -->
       </geometry>
       <material name="blue"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/motoman_axis_t.stl"/>
+        <mesh filename="motoman_axis_t.stl"/>
         <!-- <mesh filename="sda10f_description/meshes/sda10f/collision/motoman_axis_t.stl"/> -->
       </geometry>
       <material name="yellow"/>
@@ -534,15 +534,15 @@
 
 
     <link name="onrobot_vgc10_base_link">
-      <inertial>
-        <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-        <mass value="0.6" />
-        <inertia ixx="1.0E-03" ixy="1.0E-06" ixz="1.0E-06" iyy="1.0E-03" iyz="1.0E-06" izz="1.0E-03" />
-      </inertial>
+      <!-- <inertial> -->
+      <!--   <origin xyz="0.0 0.0 0.0" rpy="0 0 0" /> -->
+      <!--   <mass value="0.6" /> -->
+      <!--   <inertia ixx="1.0E-03" ixy="1.0E-06" ixz="1.0E-06" iyy="1.0E-03" iyz="1.0E-06" izz="1.0E-03" /> -->
+      <!-- </inertial> -->
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="motoman_config/updated_obj_urdf/onrobot_vgc10/visual/base_link.stl" />
+          <mesh filename="base_link_v.stl" />
         </geometry>
         <material name="blue">
           <color rgba="0 0 1 1" />
@@ -551,26 +551,26 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="motoman_config/updated_obj_urdf/onrobot_vgc10/collision/base_link.stl" />
+          <mesh filename="base_link.stl" />
         </geometry>
       </collision>
-    <!-- <inertial> -->
-    <!-- <origin xyz="0.04835756 -0.00001145 -0.00005143"/> -->
-    <!-- <mass value="0.00081386"/> -->
-    <!-- <inertia ixx="0.00000110" ixy="0.00000000" ixz="0.00000000" iyy="0.00000115" iyz="-0.00000000" izz="0.00000115"/> -->
-    <!-- </inertial> -->      
+    <inertial>
+    <origin xyz="0.04835756 -0.00001145 -0.00005143"/>
+    <mass value="0.00081386"/>
+    <inertia ixx="0.00000110" ixy="0.00000000" ixz="0.00000000" iyy="0.00000115" iyz="-0.00000000" izz="0.00000115"/>
+    </inertial>      
     </link>
 
     <link name="onrobot_vgc10_suction">
-      <inertial>
-        <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-        <mass value="0.2" />
-        <inertia ixx="1.0E-03" ixy="1.0E-06" ixz="1.0E-06" iyy="1.0E-03" iyz="1.0E-06" izz="1.0E-03" />
-      </inertial>
+      <!-- <inertial> -->
+      <!--   <origin xyz="0.0 0.0 0.0" rpy="0 0 0" /> -->
+      <!--   <mass value="0.2" /> -->
+      <!--   <inertia ixx="1.0E-03" ixy="1.0E-06" ixz="1.0E-06" iyy="1.0E-03" iyz="1.0E-06" izz="1.0E-03" /> -->
+      <!-- </inertial> -->
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="motoman_config/updated_obj_urdf/onrobot_vgc10/visual/suction_cup.stl" />
+          <mesh filename="suction_cup_v.stl" />
         </geometry>
         <material name="blue">
           <color rgba="0 0 1 1" />
@@ -579,14 +579,14 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="motoman_config/updated_obj_urdf/onrobot_vgc10/collision/suction_cup.stl" />
+          <mesh filename="suction_cup.stl" />
         </geometry>
       </collision>
-    <!-- <inertial> -->
-    <!-- <origin xyz="0.05012417 -0.00023699 -0.00003326"/> -->
-    <!-- <mass value="0.00005331"/> -->
-    <!-- <inertia ixx="0.00000001" ixy="0.00000000" ixz="0.00000000" iyy="0.00000003" iyz="-0.00000000" izz="0.00000003"/> -->
-    <!-- </inertial> -->
+    <inertial>
+    <origin xyz="0.05012417 -0.00023699 -0.00003326"/>
+    <mass value="0.00005331"/>
+    <inertia ixx="0.00000001" ixy="0.00000000" ixz="0.00000000" iyy="0.00000003" iyz="-0.00000000" izz="0.00000003"/>
+    </inertial>
     </link>
     <joint name="onrobot_vgc10_suction_joint" type="fixed">
       <origin xyz="0 0 0.094901" rpy="0 0 0" />
@@ -618,7 +618,7 @@
   <!-- <link name="motoman_right_hand">
     <visual>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/visual/modelO42.stl"/>
+        <mesh filename="modelO42.stl"/>
       </geometry>
       <material name="blue">
         <color rgba="0 0 1 1"/>
@@ -626,7 +626,7 @@
     </visual>
     <collision>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/sda10f_description/meshes/sda10f/collision/modelO42.stl"/>
+        <mesh filename="modelO42.stl"/>
       </geometry>
       <material name="yellow">
         <color rgba="0 1 1 1"/>
@@ -652,7 +652,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/visual/robotiq_arg2f_85_base_link.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_base_link_v.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="">
         <color rgba="0.1 0.1 0.1 1"/>
@@ -661,7 +661,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/collision/robotiq_arg2f_base_link.stl"/>
+        <mesh filename="robotiq_arg2f_base_link.stl"/>
       </geometry>
     </collision>
     <inertial>
@@ -679,7 +679,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/visual/robotiq_arg2f_85_outer_knuckle.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_outer_knuckle_v.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="">
         <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1"/>
@@ -688,7 +688,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/collision/robotiq_arg2f_85_outer_knuckle.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_outer_knuckle.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
@@ -706,7 +706,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/visual/robotiq_arg2f_85_outer_finger.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_outer_finger_v.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="">
         <color rgba="0.1 0.1 0.1 1"/>
@@ -715,7 +715,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/collision/robotiq_arg2f_85_outer_finger.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_outer_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
@@ -733,7 +733,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/visual/robotiq_arg2f_85_inner_finger.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_inner_finger_v.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="">
         <color rgba="0.1 0.1 0.1 1"/>
@@ -742,7 +742,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/collision/robotiq_arg2f_85_inner_finger.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_inner_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
@@ -784,7 +784,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/visual/robotiq_arg2f_85_inner_knuckle.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_inner_knuckle_v.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="">
         <color rgba="0.1 0.1 0.1 1"/>
@@ -793,7 +793,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/collision/robotiq_arg2f_85_inner_knuckle.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_inner_knuckle.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
 <inertial>
@@ -815,7 +815,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/visual/robotiq_arg2f_85_outer_knuckle.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_outer_knuckle_v.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="">
         <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1"/>
@@ -824,7 +824,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/collision/robotiq_arg2f_85_outer_knuckle.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_outer_knuckle.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
@@ -846,7 +846,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/visual/robotiq_arg2f_85_outer_finger.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_outer_finger_v.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="">
         <color rgba="0.1 0.1 0.1 1"/>
@@ -855,7 +855,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/collision/robotiq_arg2f_85_outer_finger.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_outer_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
@@ -873,7 +873,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/visual/robotiq_arg2f_85_inner_finger.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_inner_finger_v.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="">
         <color rgba="0.1 0.1 0.1 1"/>
@@ -882,7 +882,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/collision/robotiq_arg2f_85_inner_finger.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_inner_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
@@ -924,7 +924,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/visual/robotiq_arg2f_85_inner_knuckle.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_inner_knuckle_v.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="">
         <color rgba="0.1 0.1 0.1 1"/>
@@ -933,7 +933,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="motoman_config/updated_obj_urdf/robotiq_85/collision/robotiq_arg2f_85_inner_knuckle.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="robotiq_arg2f_85_inner_knuckle.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <inertial>
