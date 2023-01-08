@@ -40,14 +40,14 @@ def load_scene_workspace(robot_xml, scene_json):
         <light directional="true" pos="-0.5 0.5 3" dir="0 0 -1" castshadow="false" diffuse="1 1 1"/>
         <body name="scene" pos="0 0 0">
         </body>
-        <!--<body name="cloud" pos="0 0 1.5">-->
-          <!--<joint type="free"/>-->
-          <geom name="p1" size=".01" type="sphere" rgba=".9 .1 .1 1" pos="0.00 0 1.5"/>
-          <geom name="p2" size=".01" type="sphere" rgba=".9 .1 .1 1" pos="0.02 0 1.5"/>
-          <geom name="p3" size=".01" type="sphere" rgba=".9 .1 .1 1" pos="0.04 0 1.5"/>
-          <geom name="p4" size=".01" type="sphere" rgba=".9 .1 .1 1" pos="0.06 0 1.5"/>
-          <geom name="p5" size=".01" type="sphere" rgba=".9 .1 .1 1" pos="0.08 0 1.5"/>
-        <!--</body>-->
+        <body name="cloud" pos="-0.5 0 0">
+          <joint type="free"/>
+          <geom name="p1" size=".02" type="sphere" rgba=".9 .1 .1 1" pos="0.00 0 1.5"/>
+          <geom name="p2" size=".02" type="sphere" rgba=".9 .1 .1 1" pos="0.04 0 1.5"/>
+          <geom name="p3" size=".02" type="sphere" rgba=".9 .1 .1 1" pos="0.08 0 1.5"/>
+          <geom name="p4" size=".02" type="sphere" rgba=".9 .1 .1 1" pos="0.12 0 1.5"/>
+          <geom name="p5" size=".02" type="sphere" rgba=".9 .1 .1 1" pos="0.16 0 1.5"/>
+        </body>
       </worldbody>
     </mujoco>
     """
@@ -128,11 +128,16 @@ if __name__ == '__main__':
     scene_json = 'scene_shelf1.json'
 
     world, data, viewer = init(robot_xml, assets_dir, scene_json)
+    dt = 0.001
+    world.opt.timestep = dt
+
     ll = world.jnt_range[:, 0]
     ul = world.jnt_range[:, 1]
 
-    angle = 0
-    sign = 1
+    angle1 = 0
+    angle2 = 0
+    sign1 = 1
+    sign2 = 1
     while viewer.is_alive:
         # print(data.geom("p1"))
         # print(world.geom(1))
@@ -142,14 +147,18 @@ if __name__ == '__main__':
         # print(world.name_geomadr)
         # print(world.names)
         # data.geom("p1").xpos = [0, angle, 1.5]
-        data.ctrl[0] = angle
-        data.ctrl[1:] = 0
-        # data.ctrl[:] = 0
-        mujoco.mj_step(world, data)
-        print(len(data.contact), colliding_body_pairs(data.contact, world))
+        mujoco.mj_step1(world, data)
+        data.act[1] = angle1
+        data.act[2] = angle2
+        # data.ctrl[15:] = 0.9
+        mujoco.mj_step2(world, data)
+        # print(len(data.contact), colliding_body_pairs(data.contact, world))
         viewer.render()
-        angle += sign * 0.0001
-        if angle > 1.58:
-            sign *= -1
+        angle1 += sign1 * 0.2 * dt
+        if angle1 > 1 or angle1 < 0:
+            sign1 *= -1
+        angle2 += sign2 * 0.2 * dt
+        if angle2 > 1 or angle2 < 0:
+            sign2 *= -1
 
     viewer.close()
