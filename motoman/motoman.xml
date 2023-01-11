@@ -84,6 +84,7 @@
                       <geom pos="0 0 -0.035" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" rgba="0 0 1 1" mesh="base_link"/>
                       <geom pos="8.082e-09 -6.97135e-07 -0.129901" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0 0 1 1" mesh="suction_cup_v"/>
                       <geom pos="8.082e-09 -6.97135e-07 -0.129901" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" rgba="0 0 1 1" mesh="suction_cup"/>
+                      <body name="EE_left" pos="0 0 -0.22" euler="0 0 0"/>
                     </body>
                   </body>
                 </body>
@@ -147,6 +148,7 @@
                       <geom size="0.011 0.003175 0.01875" pos="-0.0461771 -0.000498563 -0.185324" quat="-2.61133e-06 0.710914 -0.703279 2.58329e-06" type="box" rgba="0.9 0.9 0.9 1"/>
                       <geom pos="-0.0126988 -0.000137106 -0.11642" quat="-2.61133e-06 0.710914 -0.703279 2.58329e-06" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.1 0.1 0.1 1" mesh="robotiq_arg2f_85_inner_knuckle_v"/>
                       <geom pos="-0.0126988 -0.000137106 -0.11642" quat="-2.61133e-06 0.710914 -0.703279 2.58329e-06" type="mesh" rgba="0.1 0.1 0.1 1" mesh="robotiq_arg2f_85_inner_knuckle"/>
+                      <body name="EE_right" pos="0 0 -0.06" euler="0 0 0"/>
                     </body>
                   </body>
                 </body>
@@ -158,66 +160,20 @@
     </body>
   </worldbody>
   <actuator>
-
-    <!-- <position name="torso_b1" joint="torso_joint_b1" kp="5000" /> -->
-    <!-- <position name="arm_left_1_s" joint="arm_left_joint_1_s" kp="500" /> -->
-    <!-- <position name="arm_left_2_l" joint="arm_left_joint_2_l" kp="500" /> -->
-    <!-- <position name="arm_left_3_e" joint="arm_left_joint_3_e" kp="500" /> -->
-    <!-- <position name="arm_left_4_u" joint="arm_left_joint_4_u" kp="500" /> -->
-    <!-- <position name="arm_left_5_r" joint="arm_left_joint_5_r" kp="500" /> -->
-    <!-- <position name="arm_left_6_b" joint="arm_left_joint_6_b" kp="500" /> -->
-    <!-- <position name="arm_left_7_t" joint="arm_left_joint_7_t" kp="500" /> -->
-    <!-- <position name="arm_right_1_s" joint="arm_right_joint_1_s" kp="500" /> -->
-    <!-- <position name="arm_right_2_l" joint="arm_right_joint_2_l" kp="500" /> -->
-    <!-- <position name="arm_right_3_e" joint="arm_right_joint_3_e" kp="500" /> -->
-    <!-- <position name="arm_right_4_u" joint="arm_right_joint_4_u" kp="500" /> -->
-    <!-- <position name="arm_right_5_r" joint="arm_right_joint_5_r" kp="500" /> -->
-    <!-- <position name="arm_right_6_b" joint="arm_right_joint_6_b" kp="500" /> -->
-    <!-- <position name="arm_right_7_t" joint="arm_right_joint_7_t" kp="500" /> -->
-    <!-- <velocity name="v_torso_b1" joint="torso_joint_b1" kv="2.26"/> -->
-    <!-- <velocity name="v_arm_left_1_s" joint="arm_left_joint_1_s" kv="2.96"/> -->
-    <!-- <velocity name="v_arm_left_2_l" joint="arm_left_joint_2_l" kv="2.96"/> -->
-    <!-- <velocity name="v_arm_left_3_e" joint="arm_left_joint_3_e" kv="2.96"/> -->
-    <!-- <velocity name="v_arm_left_4_u" joint="arm_left_joint_4_u" kv="2.96"/> -->
-    <!-- <velocity name="v_arm_left_5_r" joint="arm_left_joint_5_r" kv="3.49"/> -->
-    <!-- <velocity name="v_arm_left_6_b" joint="arm_left_joint_6_b" kv="3.49"/> -->
-    <!-- <velocity name="v_arm_left_7_t" joint="arm_left_joint_7_t" kv="6.98"/> -->
-    <!-- <velocity name="v_arm_right_1_s" joint="arm_right_joint_1_s" kv="2.96"/> -->
-    <!-- <velocity name="v_arm_right_2_l" joint="arm_right_joint_2_l" kv="2.96"/> -->
-    <!-- <velocity name="v_arm_right_3_e" joint="arm_right_joint_3_e" kv="2.96"/> -->
-    <!-- <velocity name="v_arm_right_4_u" joint="arm_right_joint_4_u" kv="2.96"/> -->
-    <!-- <velocity name="v_arm_right_5_r" joint="arm_right_joint_5_r" kv="3.49"/> -->
-    <!-- <velocity name="v_arm_right_6_b" joint="arm_right_joint_6_b" kv="3.49"/> -->
-    <!-- <velocity name="v_arm_right_7_t" joint="arm_right_joint_7_t" kv="6.98"/> -->
-    <intvelocity name="iv_torso_b1" joint="torso_joint_b1" kp="2000" actrange="-1.58 1.58"/>
-    <intvelocity name="iv_arm_left_1_s" joint="arm_left_joint_1_s" kp="2000" actrange="-3.13 3.13"/>
-    <intvelocity name="iv_arm_left_2_l" joint="arm_left_joint_2_l" kp="2000" actrange="-1.9 1.9"/>
-    <intvelocity name="iv_arm_left_3_e" joint="arm_left_joint_3_e" kp="2000" actrange="-2.95 2.95"/>
-    <intvelocity name="iv_arm_left_4_u" joint="arm_left_joint_4_u" kp="2000" actrange="-2.36 2.36"/>
-    <intvelocity name="iv_arm_left_5_r" joint="arm_left_joint_5_r" kp="2000" actrange="-3.13 3.13"/>
-    <intvelocity name="iv_arm_left_6_b" joint="arm_left_joint_6_b" kp="2000" actrange="-1.9 1.9"/>
-    <intvelocity name="iv_arm_left_7_t" joint="arm_left_joint_7_t" kp="2000" actrange="-3.13 3.13"/>
-    <intvelocity name="iv_arm_right_1_s" joint="arm_right_joint_1_s" kp="2000" actrange="-3.13 3.13"/>
-    <intvelocity name="iv_arm_right_2_l" joint="arm_right_joint_2_l" kp="2000" actrange="-1.9 1.9"/>
-    <intvelocity name="iv_arm_right_3_e" joint="arm_right_joint_3_e" kp="2000" actrange="-2.95 2.95"/>
-    <intvelocity name="iv_arm_right_4_u" joint="arm_right_joint_4_u" kp="2000" actrange="-2.36 2.36"/>
-    <intvelocity name="iv_arm_right_5_r" joint="arm_right_joint_5_r" kp="2000" actrange="-3.13 3.13"/>
-    <intvelocity name="iv_arm_right_6_b" joint="arm_right_joint_6_b" kp="2000" actrange="-1.9 1.9"/>
-    <intvelocity name="iv_arm_right_7_t" joint="arm_right_joint_7_t" kp="2000" actrange="-3.13 3.13"/>
-    <!-- <damper name="dtorso_b1" joint="torso_joint_b1" kv="1" ctrlrange="0 1"/> -->
-    <!-- <damper name="darm_left_1_s" joint="arm_left_joint_1_s" kv="1" ctrlrange="0 1"/> -->
-    <!-- <damper name="darm_left_2_l" joint="arm_left_joint_2_l" kv="1" ctrlrange="0 1"/> -->
-    <!-- <damper name="darm_left_3_e" joint="arm_left_joint_3_e" kv="1" ctrlrange="0 1"/> -->
-    <!-- <damper name="darm_left_4_u" joint="arm_left_joint_4_u" kv="1" ctrlrange="0 1"/> -->
-    <!-- <damper name="darm_left_5_r" joint="arm_left_joint_5_r" kv="1" ctrlrange="0 1"/> -->
-    <!-- <damper name="darm_left_6_b" joint="arm_left_joint_6_b" kv="1" ctrlrange="0 1"/> -->
-    <!-- <damper name="darm_left_7_t" joint="arm_left_joint_7_t" kv="1" ctrlrange="0 1"/> -->
-    <!-- <damper name="darm_right_1_s" joint="arm_right_joint_1_s" kv="1" ctrlrange="0 1"/> -->
-    <!-- <damper name="darm_right_2_l" joint="arm_right_joint_2_l" kv="1" ctrlrange="0 1"/> -->
-    <!-- <damper name="darm_right_3_e" joint="arm_right_joint_3_e" kv="1" ctrlrange="0 1"/> -->
-    <!-- <damper name="darm_right_4_u" joint="arm_right_joint_4_u" kv="1" ctrlrange="0 1"/> -->
-    <!-- <damper name="darm_right_5_r" joint="arm_right_joint_5_r" kv="1" ctrlrange="0 1"/> -->
-    <!-- <damper name="darm_right_6_b" joint="arm_right_joint_6_b" kv="1" ctrlrange="0 1"/> -->
-    <!-- <damper name="darm_right_7_t" joint="arm_right_joint_7_t" kv="1" ctrlrange="0 1"/> -->
+    <motor name="torso_b1" joint="torso_joint_b1"/>
+    <motor name="arm_left_1_s" joint="arm_left_joint_1_s"/>
+    <motor name="arm_left_2_l" joint="arm_left_joint_2_l"/>
+    <motor name="arm_left_3_e" joint="arm_left_joint_3_e"/>
+    <motor name="arm_left_4_u" joint="arm_left_joint_4_u"/>
+    <motor name="arm_left_5_r" joint="arm_left_joint_5_r"/>
+    <motor name="arm_left_6_b" joint="arm_left_joint_6_b"/>
+    <motor name="arm_left_7_t" joint="arm_left_joint_7_t"/>
+    <motor name="arm_right_1_s" joint="arm_right_joint_1_s"/>
+    <motor name="arm_right_2_l" joint="arm_right_joint_2_l"/>
+    <motor name="arm_right_3_e" joint="arm_right_joint_3_e"/>
+    <motor name="arm_right_4_u" joint="arm_right_joint_4_u"/>
+    <motor name="arm_right_5_r" joint="arm_right_joint_5_r"/>
+    <motor name="arm_right_6_b" joint="arm_right_joint_6_b"/>
+    <motor name="arm_right_7_t" joint="arm_right_joint_7_t"/>
   </actuator>
 </mujoco>

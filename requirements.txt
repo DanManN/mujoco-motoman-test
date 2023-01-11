@@ -1,10 +1,9 @@
-dm-control
+-e git+git@github.com:DanManN/abr_control.git@b9ab86a3aebe0b31477f737261ce56496899a021#egg=abr_control
+pyaml
+seaborn
 dm-env
 dm-tree
-glfw
+dm-control
 mujoco
 mujoco-python-viewer
-pycollada
-seaborn
-transformations
-trimesh
+sdformat-mjcf
