@@ -147,8 +147,6 @@ def joint_controller(world, data):
             jntadr = joint.id
             robot_config.joint_pos_addrs += get_joint_pos_addrs(jntadr)
             robot_config.joint_dyn_addrs += get_joint_dyn_addrs(jntadr)
-    print(robot_config.joint_pos_addrs)
-    print(robot_config.joint_dyn_addrs)
 
     ctrlr = Joint(robot_config, kp=20, kv=10)
 
@@ -194,20 +192,22 @@ if __name__ == '__main__':
         # print(world.names)
         # data.geom("p1").xpos = [0, angle, 1.5]
         # mujoco.mj_forward(world,data)
+        target = [0, angle1, angle2, 0, 0, 0, 0, 0, 0, 0, angle1, angle2, 0, 0, 0]
         u = ctrlr.generate(
             q=data.qpos[-15:],
             dq=data.qvel[-15:],
-            target=[0, angle1, angle2, 0, 0, 0, 0, 0, 0, 0, angle1, angle2, 0, 0, 0],
+            target=target,
         )
         data.ctrl[:] = u[:]
         mujoco.mj_step(world, data)
         # print(len(data.contact), colliding_body_pairs(data.contact, world))
         viewer.render()
-        angle1 += sign1 * step * dt
-        if angle1 > 1 or angle1 < 0:
-            sign1 *= -1
-        angle2 += sign2 * step * dt
-        if angle2 > 1 or angle2 < 0:
-            sign2 *= -1
+        if np.linalg.norm(data.qpos[-15:] - target) < 0.05:
+            angle1 += sign1 * step * dt
+            if angle1 > 1 or angle1 < 0:
+                sign1 *= -1
+            angle2 += sign2 * step * dt
+            if angle2 > 1 or angle2 < 0:
+                sign2 *= -1
 
     viewer.close()
