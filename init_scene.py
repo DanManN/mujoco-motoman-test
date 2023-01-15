@@ -43,18 +43,16 @@ def load_scene_workspace(robot_xml, scene_json):
         <light directional="true" pos="-0.5 0.5 3" dir="0 0 -1" castshadow="false" diffuse="1 1 1"/>
         <body name="scene" pos="0 0 0">
         </body>
-        <body name="cloud" pos="-0.5 0 0">
-          <joint type="free"/>
-          <geom name="p1" size=".02" type="sphere" rgba=".9 .1 .1 1" pos="0.00 0 1.5"/>
-          <geom name="p2" size=".02" type="sphere" rgba=".9 .1 .1 1" pos="0.04 0 1.5"/>
-          <geom name="p3" size=".02" type="sphere" rgba=".9 .1 .1 1" pos="0.08 0 1.5"/>
-          <geom name="p4" size=".02" type="sphere" rgba=".9 .1 .1 1" pos="0.12 0 1.5"/>
-          <geom name="p5" size=".02" type="sphere" rgba=".9 .1 .1 1" pos="0.16 0 1.5"/>
+        <body name="phys" pos="-0.5 0 0">
+          <freejoint/>
+          <geom name="p1" size=".1" type="sphere" rgba=".9 .1 .1 1" pos="0.00 0 1.5"/>
         </body>
-        <body name="btest" mocap="true" pos="0.55 0.55 1.0">
-           <geom name="gtest" size="0.15" type="sphere" rgba=".9 .1 .1 1"/>
+        <body name="obs" mocap="true" pos="0.55 0.55 1.0">
+          <geom name="gtest" size="0.12" type="sphere" rgba=".9 .1 .1 1"/>
         </body>
-        <geom name="gtarget" size="0.01" type="sphere" rgba=".1 .9 .1 1" pos="0.7 0.3 1.0" contype="2" conaffinity="2"/>
+        <body name="btarget" mocap="true" >
+          <geom name="gtarget" size="0.02" type="sphere" rgba=".1 .9 .1 1" pos="0.7 0.3 1.0" contype="2" conaffinity="2"/>
+        </body>
       </worldbody>
     </mujoco>
     """
@@ -75,7 +73,27 @@ def load_scene_workspace(robot_xml, scene_json):
             quat=ori,
             size=shape / 2,
             rgba=[1., 0.64, 0.0, 1.0],
+            # gap=10,
         )
+
+    # size = 0.01
+    # len_grid = 44
+    # side = np.linspace(-2 * size * len_grid, 2 * size * len_grid, len_grid)
+    # coords = [[x, y] for x in side for y in side]
+    # for i in range(len_grid**2):
+    #     world_model.worldbody.add(
+    #         'body',
+    #         name=f'cp{i}',
+    #         pos=[*coords[i], -.3],
+    #     ).add(
+    #         'geom',
+    #         type='sphere',
+    #         condim=1,
+    #         gap=size,
+    #         size=[size],
+    #         rgba=[.1, .1, .9, 1],
+    #     )
+
     robot = mjcf.from_path(robot_xml)
     world_model.attach(robot)
     return world_model
@@ -141,7 +159,7 @@ def joint_controller(world, data):
     robot_config._MNN = np.zeros((world.nv, world.nv))
     robot_config.joint_pos_addrs = []
     robot_config.joint_dyn_addrs = []
-    for i in range(world.nu + 1):
+    for i in range(world.njnt):
         joint = world.jnt(i)
         name = joint.name
         if 'sda10f' in name:
@@ -184,16 +202,10 @@ if __name__ == '__main__':
     sign2 = 1
     step = 0.5
     while viewer.is_alive:
-        # print(data.geom("p1"))
-        # print(world.geom(1))
-        # print(len(world.geom_bodyid))
-        # print(world.geom_bodyid)
-        # print(len(world.name_geomadr))
-        # print(world.name_geomadr)
-        # print(world.names)
-        # data.geom("p1").xpos = [0, angle, 1.5]
+        mocap_id = world.body("btarget").mocapid
+        data.mocap_pos[mocap_id] = [0.55, 0.55, 1 + angle1]
         # mujoco.mj_forward(world,data)
-        target = [0, angle1, angle2, 0, 0, 0, 0, 0, 0, 0, angle1, angle2, 0, 0, 0]
+        target = [0, 0, angle2, 0, angle1, 0, 0, 0, 0, angle1, 0, angle2, 0, 0, 0]
         u = ctrlr.generate(
             q=data.qpos[-15:],
             dq=data.qvel[-15:],
@@ -203,7 +215,7 @@ if __name__ == '__main__':
         mujoco.mj_step(world, data)
         # print(len(data.contact), colliding_body_pairs(data.contact, world))
         viewer.render()
-        if np.linalg.norm(data.qpos[-15:] - target) < 0.05:
+        if np.linalg.norm(data.qpos[-15:] - target) < 0.125:
             angle1 += sign1 * step * dt
             if angle1 > 1 or angle1 < 0:
                 sign1 *= -1

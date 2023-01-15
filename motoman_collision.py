@@ -9,7 +9,6 @@ import glob
 import time
 import numpy as np
 import seaborn as sb
-import transformations as tf
 import matplotlib.pyplot as plt
 
 import mujoco
