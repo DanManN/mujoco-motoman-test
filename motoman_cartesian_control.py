@@ -10,16 +10,13 @@ import mujoco
 import mujoco_viewer
 from dm_control import mjcf
 
-from abr_control.arms.mujoco_config import MujocoConfig as arm
 from abr_control.controllers import OSC, Damping
-from abr_control.controllers.path_planners import PathPlanner
-from abr_control.controllers.path_planners.position_profiles import Linear
-from abr_control.controllers.path_planners.velocity_profiles import Gaussian
+from abr_control.arms.mujoco_config import MujocoConfig as arm
 
 from init_scene import *
 
 
-def cartesian_controller(world, data, dt):
+def cartesian_controller(world, data):
     robot_config = arm("motoman")
 
     def get_joint_pos_addrs(jntadr):
@@ -70,12 +67,8 @@ def cartesian_controller(world, data, dt):
         ctrlr_dof=[True, True, True, False, False, False],
     )
 
-    path_planner = PathPlanner(
-        pos_profile=Linear(), vel_profile=Gaussian(dt=dt, acceleration=5)
-    )
-
     mujoco.mj_forward(world, data)  # need to run ik
-    return ctrlr, path_planner
+    return ctrlr
 
 
 robot_xml = 'motoman/motoman.xml'
@@ -85,7 +78,7 @@ scene_json = 'scene_shelf1.json'
 world, data, viewer = init(robot_xml, assets_dir, scene_json)
 dt = 0.001
 world.opt.timestep = dt
-ctrlr, path_planner = cartesian_controller(world, data, dt)
+ctrlr = cartesian_controller(world, data)
 
 while viewer.is_alive:
     u = ctrlr.generate(
