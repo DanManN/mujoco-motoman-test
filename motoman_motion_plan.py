@@ -62,9 +62,16 @@ start = np.zeros(15)
 goal = list(qout) + 7 * [0]
 print(start, goal)
 t0 = time.time()
-plan = planner.plan(start, goal, 5, og.RRTConnect)
+raw_plan = planner.plan(start, goal, 5, og.RRTConnect)
 t1 = time.time()
-print("motion plan:", t1 - t0, len(plan))
+print("motion plan:", t1 - t0, len(raw_plan))
+
+## interpolate plan
+steps = 8
+plan = []
+for x, y in zip(raw_plan[:-1], raw_plan[1:]):
+    plan += np.linspace(x, y, int(np.linalg.norm(np.subtract(y, x)) * steps)).tolist()
+print("interped plan:", len(plan))
 
 ## reset positions
 data.qpos[-15:] = 0
@@ -84,7 +91,7 @@ while viewer.is_alive:
     data.ctrl[:] = u[:]
     mujoco.mj_step(world, data)
 
-    if np.linalg.norm(data.qpos[-15:] - target) < 0.2:
+    if np.linalg.norm(data.qpos[-15:] - target) < 0.125:
         i += 1
 
     viewer.render()
