@@ -10,20 +10,33 @@ import mujoco
 import mujoco_viewer
 from dm_control import mjcf
 
+from tracikpy import TracIKSolver
+from abr_control.utils import transformations
+
 from abr_control.controllers import Joint
 from abr_control.arms.mujoco_config import MujocoConfig as arm
 
 from init_scene import *
 from planner import Planner
+from ompl import geometric as og
 
 robot_xml = 'motoman/motoman.xml'
 assets_dir = 'motoman/meshes'
 scene_json = 'scene_shelf1.json'
 
+## Intialization
+t0 = time.time()
 world, data, viewer = init(robot_xml, assets_dir, scene_json)
 dt = 0.001
 world.opt.timestep = dt
 ctrlr = joint_controller(world, data)
+ik_solver = TracIKSolver(
+    "./motoman/motoman_dual.urdf",
+    "base_link",
+    "motoman_left_ee",
+)
+ll = world.jnt_range[-15:, 0]
+ul = world.jnt_range[-15:, 1]
 
 
 def collision_free(state):
@@ -32,18 +45,32 @@ def collision_free(state):
     return len(data.contact) <= 1
 
 
-ll = world.jnt_range[1:, 0]
-ul = world.jnt_range[1:, 1]
-print(ll, ul)
 planner = Planner(15, ll, ul, collision_free)
+t1 = time.time()
+print("total init:", t1 - t0)
+
+## IK for target position
+ee_pose = transformations.euler_matrix(-np.pi / 2, 0, -np.pi / 2)
+ee_pose[:3, 3] = [0.7, 0.3, 1.0]
+t0 = time.time()
+qout = ik_solver.ik(ee_pose, qinit=np.zeros(ik_solver.number_of_joints))
+t1 = time.time()
+print("ik:", t1 - t0, qout)
+
+## Motion plan to joint goal
 start = np.zeros(15)
-goal = [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0]  #np.random.uniform(ll, ul)
-print(collision_free(start))
-print(collision_free(goal))
-plan = planner.plan(start, goal, 5)
-# reset
+goal = list(qout) + 7 * [0]
+print(start, goal)
+t0 = time.time()
+plan = planner.plan(start, goal, 5, og.RRTConnect)
+t1 = time.time()
+print("motion plan:", t1 - t0, len(plan))
+
+## reset positions
 data.qpos[-15:] = 0
 mujoco.mj_forward(world, data)
+
+## run simulation
 i = 0
 while viewer.is_alive:
     if i < len(plan):
@@ -57,7 +84,7 @@ while viewer.is_alive:
     data.ctrl[:] = u[:]
     mujoco.mj_step(world, data)
 
-    if np.linalg.norm(data.qpos[-15:] - target) < 0.1:
+    if np.linalg.norm(data.qpos[-15:] - target) < 0.2:
         i += 1
 
     viewer.render()

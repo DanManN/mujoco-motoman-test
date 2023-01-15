@@ -28,6 +28,7 @@ class Planner():
         # create a simple setup object
         ss = og.SimpleSetup(space)
         ss.setStateValidityChecker(ob.StateValidityCheckerFn(self.isStateValid))
+        print(ss.getSpaceInformation().settings())
 
         # expose relevant variables
         self.ss = ss
@@ -38,11 +39,12 @@ class Planner():
         self.goal = ob.State(space)
         self.collision_free = collision_free
 
-    def plan(self, start, goal, time=1.0):
+    def plan(self, start, goal, time=1.0, TypePlanner=og.RRTConnect):
         for i in range(self.dof):
             self.start[i] = start[i]
             self.goal[i] = goal[i]
         self.ss.setStartAndGoalStates(self.start, self.goal)
+        self.ss.setPlanner(TypePlanner(self.ss.getSpaceInformation()))
 
         # this will automatically choose a default planner with default parameters
         solved = self.ss.solve(time)

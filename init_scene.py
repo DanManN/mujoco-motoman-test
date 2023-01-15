@@ -51,8 +51,8 @@ def load_scene_workspace(robot_xml, scene_json):
           <geom name="p4" size=".02" type="sphere" rgba=".9 .1 .1 1" pos="0.12 0 1.5"/>
           <geom name="p5" size=".02" type="sphere" rgba=".9 .1 .1 1" pos="0.16 0 1.5"/>
         </body>
-        <body name="target" mocap="true">
-           geom name="gtarget" size=".02" type="sphere" rgba=".1 .9 .1 1" pos="0.6 0.2 1.0"/>
+        <body name="btest" mocap="true" pos="0.55 0.55 1.0">
+           <geom name="gtest" size="0.15" type="sphere" rgba=".9 .1 .1 1"/>
         </body>
       </worldbody>
     </mujoco>

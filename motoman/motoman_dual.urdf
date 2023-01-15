@@ -598,7 +598,7 @@
   <joint name="motoman_left_joint_ee" type="fixed">
     <parent link="onrobot_vgc10_base_link"/>
     <child link="motoman_left_ee"/>
-    <origin rpy="0 0 0" xyz="0 0 0.18"/>
+    <origin rpy="0 0 0" xyz="0 0 0.21"/>
     <!-- <origin rpy="0 0 0" xyz="0 0 0.3015"/> -->
     <!-- <origin rpy="0 0 0" xyz="0 0 0.068"/> -->
     <!-- <origin rpy="0 0 0" xyz="0 0 0"/> -->
@@ -638,7 +638,7 @@
     <parent link="robotiq_arg2f_base_link"/>
     <!-- <parent link="motoman_right_hand"/> -->
     <child link="motoman_right_ee"/>
-    <origin rpy="0 0 0" xyz="0 0 0.135"/>
+    <origin rpy="0 0 0" xyz="0 0 0.18"/>
   </joint>
   <link name="motoman_right_ee"></link>
 

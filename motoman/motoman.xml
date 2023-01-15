@@ -84,7 +84,7 @@
                       <geom pos="0 0 -0.035" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" rgba="0 0 1 1" mesh="base_link"/>
                       <geom pos="8.082e-09 -6.97135e-07 -0.129901" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0 0 1 1" mesh="suction_cup_v"/>
                       <geom pos="8.082e-09 -6.97135e-07 -0.129901" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" rgba="0 0 1 1" mesh="suction_cup"/>
-                      <body name="EE_left" pos="0 0 -0.22" euler="0 0 0"/>
+                      <body name="EE_left" pos="0 0 -0.21" euler="0 0 0"/>
                     </body>
                   </body>
                 </body>
@@ -148,7 +148,7 @@
                       <geom size="0.011 0.003175 0.01875" pos="-0.0461771 -0.000498563 -0.185324" quat="-2.61133e-06 0.710914 -0.703279 2.58329e-06" type="box" rgba="0.9 0.9 0.9 1"/>
                       <geom pos="-0.0126988 -0.000137106 -0.11642" quat="-2.61133e-06 0.710914 -0.703279 2.58329e-06" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.1 0.1 0.1 1" mesh="robotiq_arg2f_85_inner_knuckle_v"/>
                       <geom pos="-0.0126988 -0.000137106 -0.11642" quat="-2.61133e-06 0.710914 -0.703279 2.58329e-06" type="mesh" rgba="0.1 0.1 0.1 1" mesh="robotiq_arg2f_85_inner_knuckle"/>
-                      <body name="EE_right" pos="0 0 -0.06" euler="0 0 0"/>
+                      <body name="EE_right" pos="0 0 -0.18" euler="0 0 0"/>
                     </body>
                   </body>
                 </body>
