@@ -84,7 +84,9 @@
                       <geom pos="0 0 -0.035" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" rgba="0 0 1 1" mesh="base_link"/>
                       <geom pos="8.082e-09 -6.97135e-07 -0.129901" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0 0 1 1" mesh="suction_cup_v"/>
                       <geom pos="8.082e-09 -6.97135e-07 -0.129901" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" rgba="0 0 1 1" mesh="suction_cup"/>
-                      <body name="EE_left" pos="0 0 -0.21" euler="0 0 0"/>
+                      <body name="EE_left" pos="0 0 -0.21" euler="0 0 0">
+                        <geom type="box" size="0.02 0.02 0.01" group="1" margin="0.02" gap="0.02" pos="0 0 -0.005"/>
+                      </body>
                     </body>
                   </body>
                 </body>
@@ -175,5 +177,6 @@
     <motor name="arm_right_5_r" joint="arm_right_joint_5_r"/>
     <motor name="arm_right_6_b" joint="arm_right_joint_6_b"/>
     <motor name="arm_right_7_t" joint="arm_right_joint_7_t"/>
+    <adhesion name="suction" body="EE_left" ctrlrange="0 1" gain="80"/>
   </actuator>
 </mujoco>

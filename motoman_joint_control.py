@@ -36,7 +36,7 @@ while viewer.is_alive:
         target=[0, angle1, angle2, 0, 0, 0, 0, 0, 0, 0, angle1, angle2, 0, 0, 0],
     )
 
-    data.ctrl[:] = u[:]
+    data.ctrl[:-1] = u[:]
     mujoco.mj_step(world, data)
     viewer.render()
 

@@ -45,8 +45,8 @@ world, data, viewer = init(robot_xml, assets_dir, scene_json, gui)
 
 # * generate a random joint angle within the range
 world.jnt_range
-ll = world.jnt_range[:, 0]
-ul = world.jnt_range[:, 1]
+ll = world.jnt_range[-15:, 0]
+ul = world.jnt_range[-15:, 1]
 
 num_samples = 1000
 rand_joints = np.random.uniform(ll, ul, size=[num_samples] + list(ll.shape))

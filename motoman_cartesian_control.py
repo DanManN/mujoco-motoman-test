@@ -33,13 +33,10 @@ def cartesian_controller(world, data):
         joint_dyn_addr = list(range(first_dyn, first_dyn + dynvec_length))[::-1]
         return joint_dyn_addr
 
-    robot_config.N_JOINTS = world.nu
     robot_config.model = world
     robot_config.data = data
-    robot_config._g = np.zeros(robot_config.N_JOINTS)
     robot_config._J3NP = np.zeros((3, world.nv))
     robot_config._J3NR = np.zeros((3, world.nv))
-    robot_config._J6N = np.zeros((6, world.nu))
     robot_config._MNN = np.zeros((world.nv, world.nv))
     robot_config._R9 = np.zeros(9)
     robot_config._R = np.zeros((3, 3))
@@ -47,13 +44,17 @@ def cartesian_controller(world, data):
     robot_config.N_ALL_JOINTS = world.nv
     robot_config.joint_pos_addrs = []
     robot_config.joint_dyn_addrs = []
+    robot_config.N_JOINTS = 0
     for i in range(world.nu + 1):
         joint = world.jnt(i)
         name = joint.name
         if 'sda10f' in name:
+            robot_config.N_JOINTS += 1
             jntadr = joint.id
             robot_config.joint_pos_addrs += get_joint_pos_addrs(jntadr)
             robot_config.joint_dyn_addrs += get_joint_dyn_addrs(jntadr)
+    robot_config._g = np.zeros(robot_config.N_JOINTS)
+    robot_config._J6N = np.zeros((6, robot_config.N_JOINTS))
 
     damping = Damping(robot_config, kv=10)
     ctrlr = OSC(
@@ -87,7 +88,7 @@ while viewer.is_alive:
         target=[0.6, 0.2, 1.0],
         ref_frame="sda10f/EE_left",
     )
-    data.ctrl[:] = u[:]
+    data.ctrl[:-1] = u[:]
     mujoco.mj_step(world, data)
     viewer.render()
 viewer.close()

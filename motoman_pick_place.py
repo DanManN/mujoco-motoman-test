@@ -25,7 +25,7 @@ from ompl import geometric as og
 
 robot_xml = 'motoman/motoman.xml'
 assets_dir = 'motoman/meshes'
-scene_json = 'scene_shelf1.json'
+scene_json = 'scene_table1.json'
 
 ## Intialization
 t0 = time.time()
@@ -57,11 +57,17 @@ print("total init:", t1 - t0)
 
 ## IK for target position
 ee_pose = transformations.euler_matrix(-np.pi / 2, 0, -np.pi / 2)
-ee_pose[:3, 3] = [0.65, 0.3, 1.0]
+ee_pose[:3, 3] = [0.72, 0.3, 1.05]
 t0 = time.time()
 qout = ik_solver.ik(ee_pose, qinit=np.zeros(ik_solver.number_of_joints))
 ee_pose[:3, 3] += [0.05, 0, 0]
 qout2 = ik_solver.ik(ee_pose, qinit=qout)
+ee_pose[:3, 3] += [0, 0, 0.1]
+qout3 = ik_solver.ik(ee_pose, qinit=qout2)
+ee_pose[:3, 3] = [0.75, -0.1, 1.1]
+qout4 = ik_solver.ik(ee_pose, qinit=qout3)
+ee_pose[:3, 3] -= [0.05, 0, 0]
+qout5 = ik_solver.ik(ee_pose, qinit=qout4)
 t1 = time.time()
 print("ik:", t1 - t0, qout)
 
@@ -69,19 +75,27 @@ print("ik:", t1 - t0, qout)
 start = np.zeros(15)
 goal = list(qout) + 7 * [0]
 goal2 = list(qout2) + 7 * [0]
+goal3 = list(qout3) + 7 * [0]
+goal4 = list(qout4) + 7 * [0]
+goal5 = list(qout5) + 7 * [0]
 print(start, goal)
 t0 = time.time()
-raw_plan = planner.plan(start, goal, 5, og.RRTConnect)
+raw_plan = planner.plan(start, goal, 5, og.PRM)
+raw_plan2 = planner.plan(goal3, goal4, 5, og.PRM)
 t1 = time.time()
 print("motion plan:", t1 - t0, len(raw_plan))
 
-speed = 0.25
+speed = 0.125
 ## interpolate plan
 steps = 1.0 / speed
 plan = []
 for x, y in zip(raw_plan[:-1], raw_plan[1:]):
     plan += np.linspace(x, y, int(np.linalg.norm(np.subtract(y, x)) * steps)).tolist()
 print("interped plan:", len(plan))
+plan2 = []
+for x, y in zip(raw_plan2[:-1], raw_plan2[1:]):
+    plan2 += np.linspace(x, y, int(np.linalg.norm(np.subtract(y, x)) * steps)).tolist()
+print("interped plan2:", len(plan2))
 
 print(
     "approach path test:",
@@ -95,15 +109,27 @@ print(
 ## reset positions
 data.qpos[-15:] = 0
 mujoco.mj_forward(world, data)
+mocap_id = world.body("btarget").mocapid
+data.mocap_pos[mocap_id] = ee_pose[:3, 3] - [0.05, 0, 0]
 
 ## run simulation
 i = 0
+suction = 0
 while viewer.is_alive:
     if i < len(plan):
         target = plan[i]
     else:
-        if np.linalg.norm(data.qpos[-15:] - target) < 0.001:
+        if np.linalg.norm(data.qpos[-15:] - goal) < 0.01:
             target = goal2
+        if np.linalg.norm(data.qpos[-15:] - goal2) < 0.01:
+            suction = 1
+            target = goal3
+        if np.linalg.norm(data.qpos[-15:] - goal3) < 0.05:
+            i = 0
+            plan = plan2
+        if np.linalg.norm(data.qpos[-15:] - goal4) < 0.07:
+            target = goal5
+            suction = 0
 
     u = ctrlr.generate(
         q=data.qpos[-15:],
@@ -111,6 +137,7 @@ while viewer.is_alive:
         target=target,
     )
     data.ctrl[:-1] = u[:]
+    data.ctrl[-1] = suction
     mujoco.mj_step(world, data)
 
     if np.linalg.norm(data.qpos[-15:] - target) < speed:

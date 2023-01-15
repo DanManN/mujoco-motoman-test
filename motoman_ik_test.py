@@ -47,7 +47,7 @@ while viewer.is_alive:
         target=list(qout) + [0] * 7,
     )
 
-    data.ctrl[:] = u[:]
+    data.ctrl[:-1] = u[:]
     mujoco.mj_step(world, data)
     viewer.render()
 viewer.close()

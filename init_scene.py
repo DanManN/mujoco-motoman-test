@@ -50,8 +50,12 @@ def load_scene_workspace(robot_xml, scene_json):
         <body name="obs" mocap="true" pos="0.55 0.55 1.0">
           <geom name="gtest" size="0.12" type="sphere" rgba=".9 .1 .1 1"/>
         </body>
-        <body name="btarget" mocap="true" >
-          <geom name="gtarget" size="0.02" type="sphere" rgba=".1 .9 .1 1" pos="0.7 0.3 1.0" contype="2" conaffinity="2"/>
+        <body name="btarget" mocap="true" pos="0.7 0.3 1.0">
+          <geom name="gtarget" size="0.02" type="sphere" rgba=".1 .9 .1 1" contype="2" conaffinity="2"/>
+        </body>
+        <body name="bpick" pos="0.8 0.3 1.05">
+          <freejoint/>
+          <geom name="gpick" size=".04 .04 .04" type="box" rgba=".5 .1 .5 1" mass="0.05" friction="0.5"/>
         </body>
       </worldbody>
     </mujoco>
@@ -123,7 +127,7 @@ def set_joint_values(mdata, joint_val_dict):
 
 
 def set_joint_values_list(mdata, joint_vals):
-    mdata.qpos[-16:] = joint_vals
+    mdata.qpos[-15:] = joint_vals
 
 
 def colliding_body_pairs(contact, world):
@@ -153,21 +157,22 @@ def joint_controller(world, data):
         joint_dyn_addr = list(range(first_dyn, first_dyn + dynvec_length))[::-1]
         return joint_dyn_addr
 
-    robot_config.N_JOINTS = world.nu
     robot_config.model = world
     robot_config.data = data
     robot_config._MNN = np.zeros((world.nv, world.nv))
     robot_config.joint_pos_addrs = []
     robot_config.joint_dyn_addrs = []
+    robot_config.N_JOINTS = 0
     for i in range(world.njnt):
         joint = world.jnt(i)
         name = joint.name
         if 'sda10f' in name:
+            robot_config.N_JOINTS += 1
             jntadr = joint.id
             robot_config.joint_pos_addrs += get_joint_pos_addrs(jntadr)
             robot_config.joint_dyn_addrs += get_joint_dyn_addrs(jntadr)
 
-    ctrlr = Joint(robot_config, kp=64, kv=16)
+    ctrlr = Joint(robot_config, kp=128, kv=32)
 
     return ctrlr
 
@@ -211,7 +216,7 @@ if __name__ == '__main__':
             dq=data.qvel[-15:],
             target=target,
         )
-        data.ctrl[:] = u[:]
+        data.ctrl[:-1] = u[:]
         mujoco.mj_step(world, data)
         # print(len(data.contact), colliding_body_pairs(data.contact, world))
         viewer.render()
