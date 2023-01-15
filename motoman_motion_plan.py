@@ -66,8 +66,9 @@ raw_plan = planner.plan(start, goal, 5, og.RRTConnect)
 t1 = time.time()
 print("motion plan:", t1 - t0, len(raw_plan))
 
+speed = 0.25
 ## interpolate plan
-steps = 8
+steps = 1.0 / speed
 plan = []
 for x, y in zip(raw_plan[:-1], raw_plan[1:]):
     plan += np.linspace(x, y, int(np.linalg.norm(np.subtract(y, x)) * steps)).tolist()
@@ -91,7 +92,7 @@ while viewer.is_alive:
     data.ctrl[:] = u[:]
     mujoco.mj_step(world, data)
 
-    if np.linalg.norm(data.qpos[-15:] - target) < 0.125:
+    if np.linalg.norm(data.qpos[-15:] - target) < speed:
         i += 1
 
     viewer.render()

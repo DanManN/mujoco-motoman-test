@@ -54,6 +54,7 @@ def load_scene_workspace(robot_xml, scene_json):
         <body name="btest" mocap="true" pos="0.55 0.55 1.0">
            <geom name="gtest" size="0.15" type="sphere" rgba=".9 .1 .1 1"/>
         </body>
+        <geom name="gtarget" size="0.01" type="sphere" rgba=".1 .9 .1 1" pos="0.7 0.3 1.0" contype="2" conaffinity="2"/>
       </worldbody>
     </mujoco>
     """
@@ -148,7 +149,7 @@ def joint_controller(world, data):
             robot_config.joint_pos_addrs += get_joint_pos_addrs(jntadr)
             robot_config.joint_dyn_addrs += get_joint_dyn_addrs(jntadr)
 
-    ctrlr = Joint(robot_config, kp=20, kv=10)
+    ctrlr = Joint(robot_config, kp=64, kv=16)
 
     return ctrlr
 
