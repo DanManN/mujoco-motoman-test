@@ -85,7 +85,7 @@
                       <geom pos="8.082e-09 -6.97135e-07 -0.129901" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0 0 1 1" mesh="suction_cup_v"/>
                       <geom pos="8.082e-09 -6.97135e-07 -0.129901" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" rgba="0 0 1 1" mesh="suction_cup"/>
                       <body name="EE_left" pos="0 0 -0.21" euler="0 0 0">
-                        <geom type="box" size="0.02 0.02 0.01" group="1" margin="0.02" gap="0.02" pos="0 0 -0.005"/>
+                        <geom type="box" size="0.02 0.02 0.01" group="1" margin="0.02" gap="0.02" pos="0 0 -0.005" mass="0.00001"/>
                       </body>
                     </body>
                   </body>

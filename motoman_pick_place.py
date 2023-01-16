@@ -55,19 +55,30 @@ planner = Planner(15, ll, ul, collision_free)
 t1 = time.time()
 print("total init:", t1 - t0)
 
+
 ## IK for target position
+def get_ik(pose, qinit):
+    c = 0
+    while c < 100:
+        q = ik_solver.ik(pose, qinit=qinit)
+        if q is not None:
+            break
+        c += 1
+    return q
+
+
 ee_pose = transformations.euler_matrix(-np.pi / 2, 0, -np.pi / 2)
 ee_pose[:3, 3] = [0.72, 0.3, 1.05]
 t0 = time.time()
-qout = ik_solver.ik(ee_pose, qinit=np.zeros(ik_solver.number_of_joints))
+qout = get_ik(ee_pose, qinit=np.zeros(ik_solver.number_of_joints))
 ee_pose[:3, 3] += [0.05, 0, 0]
-qout2 = ik_solver.ik(ee_pose, qinit=qout)
+qout2 = get_ik(ee_pose, qinit=qout)
 ee_pose[:3, 3] += [0, 0, 0.1]
-qout3 = ik_solver.ik(ee_pose, qinit=qout2)
+qout3 = get_ik(ee_pose, qinit=qout2)
 ee_pose[:3, 3] = [0.75, -0.1, 1.1]
-qout4 = ik_solver.ik(ee_pose, qinit=qout3)
+qout4 = get_ik(ee_pose, qinit=qout3)
 ee_pose[:3, 3] -= [0.05, 0, 0]
-qout5 = ik_solver.ik(ee_pose, qinit=qout4)
+qout5 = get_ik(ee_pose, qinit=qout4)
 t1 = time.time()
 print("ik:", t1 - t0, qout)
 
