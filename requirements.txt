@@ -1,10 +1,10 @@
--e git+git@github.com:DanManN/abr_control.git@b9ab86a3aebe0b31477f737261ce56496899a021#egg=abr_control
 git+git@github.com:mjd3/tracikpy.git
 pyaml
 seaborn
 dm-env
 dm-tree
 dm-control
+transformations
 mujoco
 mujoco-python-viewer
 sdformat-mjcf

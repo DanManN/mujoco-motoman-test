@@ -10,14 +10,8 @@ import mujoco
 import mujoco_viewer
 from dm_control import mjcf
 
+import transformations as tf
 from tracikpy import TracIKSolver
-from abr_control.utils import transformations
-
-from abr_control.arms.mujoco_config import MujocoConfig as arm
-from abr_control.controllers import Joint
-from abr_control.controllers.path_planners import PathPlanner
-from abr_control.controllers.path_planners.position_profiles import Linear
-from abr_control.controllers.path_planners.velocity_profiles import Gaussian
 
 from init_scene import *
 from planner import Planner
@@ -30,34 +24,36 @@ scene_json = 'scene_shelf1.json'
 ## Intialization
 t0 = time.time()
 world, data, viewer = init(robot_xml, assets_dir, scene_json)
+qinds = get_qpos_indices(world)
+
 dt = 0.001
 world.opt.timestep = dt
-ctrlr = joint_controller(world, data)
 ik_solver = TracIKSolver(
     "./motoman/motoman_dual.urdf",
     "base_link",
     "motoman_left_ee",
 )
-ll = world.jnt_range[-15:, 0]
-ul = world.jnt_range[-15:, 1]
-path_planner = PathPlanner(
-    pos_profile=Linear(), vel_profile=Gaussian(dt=dt, acceleration=5)
-)
+lctrl = get_ctrl_indices(world, ["sda10f/" + j for j in ik_solver.joint_names])
+qindl = get_qpos_indices(world, ["sda10f/" + j for j in ik_solver.joint_names])
+
+ll = world.jnt_range[lctrl, 0]
+ul = world.jnt_range[lctrl, 1]
 
 
 def collision_free(state):
-    data.qpos[-15:] = [state[i] for i in range(15)]
+    data.qpos[qindl] = [state[i] for i in range(len(qindl))]
     mujoco.mj_step1(world, data)
     return len(data.contact) <= 1
 
 
-planner = Planner(15, ll, ul, collision_free)
+planner = Planner(len(qindl), ll, ul, collision_free)
 t1 = time.time()
 print("total init:", t1 - t0)
 
 ## IK for target position
-ee_pose = transformations.euler_matrix(-np.pi / 2, 0, -np.pi / 2)
-ee_pose[:3, 3] = [0.65, 0.3, 1.0]
+ee_pose = tf.euler_matrix(-np.pi / 2, 0, -np.pi / 2)
+ee_pose[:3, 3] = world.body("btarget").pos - [0.05, 0, 0]
+print(ee_pose)
 t0 = time.time()
 qout = ik_solver.ik(ee_pose, qinit=np.zeros(ik_solver.number_of_joints))
 ee_pose[:3, 3] += [0.05, 0, 0]
@@ -66,34 +62,25 @@ t1 = time.time()
 print("ik:", t1 - t0, qout)
 
 ## Motion plan to joint goal
-start = np.zeros(15)
-goal = list(qout) + 7 * [0]
-goal2 = list(qout2) + 7 * [0]
-print(start, goal)
+start = np.zeros(len(lctrl))
+goal = qout
+goal2 = qout2
 t0 = time.time()
 raw_plan = planner.plan(start, goal, 5, og.RRTConnect)
 t1 = time.time()
 print("motion plan:", t1 - t0, len(raw_plan))
+raw_plan.append(goal2)
 
-speed = 0.25
 ## interpolate plan
+speed = 0.1
 steps = 1.0 / speed
 plan = []
 for x, y in zip(raw_plan[:-1], raw_plan[1:]):
     plan += np.linspace(x, y, int(np.linalg.norm(np.subtract(y, x)) * steps)).tolist()
 print("interped plan:", len(plan))
 
-print(
-    "approach path test:",
-    path_planner.generate_path(
-        start_position=ee_pose[:3, 3],
-        target_position=ee_pose[:3, 3] + [0.05, 0, 0],
-        max_velocity=1,
-    )
-)
-
 ## reset positions
-data.qpos[-15:] = 0
+data.qpos[qindl] = 0
 mujoco.mj_forward(world, data)
 
 ## run simulation
@@ -102,18 +89,13 @@ while viewer.is_alive:
     if i < len(plan):
         target = plan[i]
     else:
-        if np.linalg.norm(data.qpos[-15:] - target) < 0.001:
+        if np.linalg.norm(data.qpos[qindl] - target) < speed:
             target = goal2
 
-    u = ctrlr.generate(
-        q=data.qpos[-15:],
-        dq=data.qvel[-15:],
-        target=target,
-    )
-    data.ctrl[:-1] = u[:]
+    data.ctrl[lctrl] = target
     mujoco.mj_step(world, data)
 
-    if np.linalg.norm(data.qpos[-15:] - target) < speed:
+    if np.linalg.norm(data.qpos[qindl] - target) < speed:
         i += 1
 
     viewer.render()

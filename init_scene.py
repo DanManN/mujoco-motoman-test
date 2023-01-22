@@ -9,9 +9,25 @@ import numpy as np
 import mujoco
 import mujoco_viewer
 from dm_control import mjcf
+import transformations as tf
 
-from abr_control.controllers import Joint
-from abr_control.arms.mujoco_config import MujocoConfig as arm
+motoman_both_arms = [
+    "sda10f/torso_joint_b1",
+    "sda10f/arm_left_joint_1_s",
+    "sda10f/arm_left_joint_2_l",
+    "sda10f/arm_left_joint_3_e",
+    "sda10f/arm_left_joint_4_u",
+    "sda10f/arm_left_joint_5_r",
+    "sda10f/arm_left_joint_6_b",
+    "sda10f/arm_left_joint_7_t",
+    "sda10f/arm_right_joint_1_s",
+    "sda10f/arm_right_joint_2_l",
+    "sda10f/arm_right_joint_3_e",
+    "sda10f/arm_right_joint_4_u",
+    "sda10f/arm_right_joint_5_r",
+    "sda10f/arm_right_joint_6_b",
+    "sda10f/arm_right_joint_7_t",
+]
 
 
 def asset_dict(assets_dir):
@@ -48,7 +64,7 @@ def load_scene_workspace(robot_xml, scene_json):
           <geom name="p1" size=".1" type="sphere" rgba=".9 .1 .1 1" pos="0.00 0 1.5"/>
         </body>
         <body name="obs" mocap="true" pos="0.55 0.55 1.0">
-          <geom name="gtest" size="0.12" type="sphere" rgba=".9 .1 .1 1"/>
+          <geom name="gobs" size="0.12" type="sphere" rgba=".9 .1 .1 1"/>
         </body>
         <body name="btarget" mocap="true" pos="0.7 0.3 1.0">
           <geom name="gtarget" size="0.02" type="sphere" rgba=".1 .9 .1 1" contype="2" conaffinity="2"/>
@@ -110,6 +126,16 @@ def init_sim(world_model, ASSETS):
     return world, data
 
 
+def get_qpos_indices(model, joints=motoman_both_arms):
+    qpos_inds = np.array([model.joint(j).qposadr[0] for j in joints], dtype=int)
+    return qpos_inds
+
+
+def get_ctrl_indices(model, joints=motoman_both_arms):
+    ctrl_inds = np.array([model.joint(j).id for j in joints], dtype=int)
+    return ctrl_inds
+
+
 def get_joint_values(mdata, joint_names):
     # this assumes that all joints are revolute joints
     joint_val_dict = {}
@@ -126,8 +152,8 @@ def set_joint_values(mdata, joint_val_dict):
         joint.qpos[0] = val
 
 
-def set_joint_values_list(mdata, joint_vals):
-    mdata.qpos[-15:] = joint_vals
+def set_joint_values_list(mdata, joint_inds, joint_vals):
+    mdata.qpos[joint_inds] = joint_vals
 
 
 def colliding_body_pairs(contact, world):
@@ -138,43 +164,6 @@ def colliding_body_pairs(contact, world):
         ) for c in contact
     ]
     return pairs
-
-
-def joint_controller(world, data):
-    robot_config = arm("motoman")
-
-    def get_joint_pos_addrs(jntadr):
-        # store the data.qpos indices associated with this joint
-        first_pos = world.jnt_qposadr[jntadr]
-        posvec_length = robot_config.JNT_POS_LENGTH[world.jnt_type[jntadr]]
-        joint_pos_addr = list(range(first_pos, first_pos + posvec_length))[::-1]
-        return joint_pos_addr
-
-    def get_joint_dyn_addrs(jntadr):
-        # store the data.qvel and .ctrl indices associated with this joint
-        first_dyn = world.jnt_dofadr[jntadr]
-        dynvec_length = robot_config.JNT_DYN_LENGTH[world.jnt_type[jntadr]]
-        joint_dyn_addr = list(range(first_dyn, first_dyn + dynvec_length))[::-1]
-        return joint_dyn_addr
-
-    robot_config.model = world
-    robot_config.data = data
-    robot_config._MNN = np.zeros((world.nv, world.nv))
-    robot_config.joint_pos_addrs = []
-    robot_config.joint_dyn_addrs = []
-    robot_config.N_JOINTS = 0
-    for i in range(world.njnt):
-        joint = world.jnt(i)
-        name = joint.name
-        if 'sda10f' in name:
-            robot_config.N_JOINTS += 1
-            jntadr = joint.id
-            robot_config.joint_pos_addrs += get_joint_pos_addrs(jntadr)
-            robot_config.joint_dyn_addrs += get_joint_dyn_addrs(jntadr)
-
-    ctrlr = Joint(robot_config, kp=128, kv=32)
-
-    return ctrlr
 
 
 def init(robot_xml, assets_dir, scene_json, gui=True):
@@ -194,38 +183,38 @@ if __name__ == '__main__':
     scene_json = 'scene_shelf1.json'
 
     world, data, viewer = init(robot_xml, assets_dir, scene_json)
+    qinds = get_qpos_indices(world)
+    ictrl = get_ctrl_indices(world)
+
     dt = 0.001
     world.opt.timestep = dt
-    ctrlr = joint_controller(world, data)
 
-    ll = world.jnt_range[:, 0]
-    ul = world.jnt_range[:, 1]
+    ee_pose = tf.euler_matrix(-np.pi / 2, 0, -np.pi / 2)
+    ee_pose[:3, 3] = [0.72, 0.3, 1.05]
 
-    angle1 = 0
-    angle2 = 0
-    sign1 = 1
-    sign2 = 1
-    step = 0.5
+    print(world.joint(world.body("phys").jntadr[0]))
+    print(world.joint(world.body("bpick").jntadr[0]))
+    print(ictrl)
+
+    angle1 = 1
+    angle2 = 1
     while viewer.is_alive:
         mocap_id = world.body("btarget").mocapid
         data.mocap_pos[mocap_id] = [0.55, 0.55, 1 + angle1]
         # mujoco.mj_forward(world,data)
         target = [0, 0, angle2, 0, angle1, 0, 0, 0, 0, angle1, 0, angle2, 0, 0, 0]
-        u = ctrlr.generate(
-            q=data.qpos[-15:],
-            dq=data.qvel[-15:],
-            target=target,
-        )
-        data.ctrl[:-1] = u[:]
+        # u = ctrlr.generate(
+        #     q=data.qpos[-15:],
+        #     dq=data.qvel[-15:],
+        #     target=target,
+        # )
+        data.ctrl[ictrl] = target
+
         mujoco.mj_step(world, data)
-        # print(len(data.contact), colliding_body_pairs(data.contact, world))
+
         viewer.render()
-        if np.linalg.norm(data.qpos[-15:] - target) < 0.125:
-            angle1 += sign1 * step * dt
-            if angle1 > 1 or angle1 < 0:
-                sign1 *= -1
-            angle2 += sign2 * step * dt
-            if angle2 > 1 or angle2 < 0:
-                sign2 *= -1
+        if np.linalg.norm(data.qpos[qinds] - target) < 0.02:
+            angle1 = 1 - angle1
+            angle2 = 1 - angle2
 
     viewer.close()
