@@ -19,6 +19,7 @@ from init_scene import *
 
 
 def test_collision(
+    joint_inds,
     joint_vals,
     data,
 ):
@@ -27,7 +28,7 @@ def test_collision(
     """
     # * set the robot configuration to a certain state
     # print out the mutable configurations
-    set_joint_values_list(data, joint_vals)
+    set_joint_values_list(data, joint_inds, joint_vals)
 
     # * check collision by getting the output query of scene graph
     mujoco.mj_step1(world, data)
@@ -42,11 +43,13 @@ scene_json = 'scene_table1.json'
 
 gui = len(sys.argv) > 1 and sys.argv[1][0] in ('t', 'T')
 world, data, viewer = init(robot_xml, assets_dir, scene_json, gui)
+qinds = get_qpos_indices(world)
+ictrl = get_ctrl_indices(world)
 
 # * generate a random joint angle within the range
 world.jnt_range
-ll = world.jnt_range[-15:, 0]
-ul = world.jnt_range[-15:, 1]
+ll = world.jnt_range[ictrl, 0]
+ul = world.jnt_range[ictrl, 1]
 
 num_samples = 1000
 rand_joints = np.random.uniform(ll, ul, size=[num_samples] + list(ll.shape))
@@ -57,7 +60,7 @@ collisions = []
 for i in range(num_samples):
     #     print('random joint: ', rand_joint)
     start_time_i = time.time()
-    col = test_collision(rand_joints[i], data)
+    col = test_collision(qinds, rand_joints[i], data)
     duration_i = time.time() - start_time_i
     if gui:
         viewer.render()

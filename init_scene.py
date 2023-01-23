@@ -10,6 +10,7 @@ import mujoco
 import mujoco_viewer
 from dm_control import mjcf
 import transformations as tf
+from tracikpy import TracIKSolver
 
 motoman_both_arms = [
     "sda10f/torso_joint_b1",
@@ -69,9 +70,9 @@ def load_scene_workspace(robot_xml, scene_json):
         <body name="btarget" mocap="true" pos="0.7 0.3 1.0">
           <geom name="gtarget" size="0.02" type="sphere" rgba=".1 .9 .1 1" contype="2" conaffinity="2"/>
         </body>
-        <body name="bpick" pos="0.8 0.3 1.05">
+        <body name="bpick" pos="0.8 -0.3 1.05">
           <freejoint/>
-          <geom name="gpick" size=".04 .04 .04" type="box" rgba=".5 .1 .5 1" mass="0.05" friction="0.5"/>
+          <geom name="gpick" size=".03 .03 .03" type="box" rgba=".5 .1 .5 1" mass="0.05" friction="0.5"/>
         </body>
       </worldbody>
     </mujoco>
@@ -126,13 +127,19 @@ def init_sim(world_model, ASSETS):
     return world, data
 
 
+def get_objq_indices(model, obj_name):
+    jnt = model.joint(model.body(obj_name).jntadr[0])
+    qpos_inds = np.array(range(jnt.qposadr[0], jnt.qposadr[0] + len(jnt.qpos0)))
+    return qpos_inds
+
+
 def get_qpos_indices(model, joints=motoman_both_arms):
-    qpos_inds = np.array([model.joint(j).qposadr[0] for j in joints], dtype=int)
+    qpos_inds = np.array([model.joint(j).qposadr[0] for j in joints])
     return qpos_inds
 
 
 def get_ctrl_indices(model, joints=motoman_both_arms):
-    ctrl_inds = np.array([model.joint(j).id for j in joints], dtype=int)
+    ctrl_inds = np.array([model.joint(j).id for j in joints])
     return ctrl_inds
 
 
@@ -189,32 +196,34 @@ if __name__ == '__main__':
     dt = 0.001
     world.opt.timestep = dt
 
-    ee_pose = tf.euler_matrix(-np.pi / 2, 0, -np.pi / 2)
-    ee_pose[:3, 3] = [0.72, 0.3, 1.05]
+    ee_pose = tf.euler_matrix(-np.pi / 2, -np.pi / 2, -np.pi / 2)
+    ee_pose[:3, 3] = world.body("bpick").pos
 
-    print(world.joint(world.body("phys").jntadr[0]))
-    print(world.joint(world.body("bpick").jntadr[0]))
-    print(ictrl)
+    bd = world.body("phys")
+    jnt = world.joint(bd.jntadr[0])
 
-    angle1 = 1
-    angle2 = 1
+    ik_solver = TracIKSolver(
+        "./motoman/motoman_dual.urdf",
+        "base_link",
+        "motoman_right_ee",
+    )
+    t0 = time.time()
+    qout = ik_solver.ik(ee_pose, qinit=np.zeros(ik_solver.number_of_joints))
+    t1 = time.time()
+    print("ik-test:", t1 - t0, qout)
+
+    lctrl = get_ctrl_indices(world, ["sda10f/" + j for j in ik_solver.joint_names])
+
+    z = 1.5
+    sign = 1
     while viewer.is_alive:
         mocap_id = world.body("btarget").mocapid
-        data.mocap_pos[mocap_id] = [0.55, 0.55, 1 + angle1]
-        # mujoco.mj_forward(world,data)
-        target = [0, 0, angle2, 0, angle1, 0, 0, 0, 0, angle1, 0, angle2, 0, 0, 0]
-        # u = ctrlr.generate(
-        #     q=data.qpos[-15:],
-        #     dq=data.qvel[-15:],
-        #     target=target,
-        # )
-        data.ctrl[ictrl] = target
-
+        data.mocap_pos[mocap_id] = [0.55, 0.55, 1]
+        data.qpos[get_objq_indices(world, "bpick")[:3]] = [0, 0, z]
+        if z > 3 or z < 1.4:
+            sign *= -1
+        z += 0.01 * sign
+        data.ctrl[lctrl] = qout
         mujoco.mj_step(world, data)
-
         viewer.render()
-        if np.linalg.norm(data.qpos[qinds] - target) < 0.02:
-            angle1 = 1 - angle1
-            angle2 = 1 - angle2
-
     viewer.close()
