@@ -5,9 +5,10 @@ sudo apt install \
 	patchelf \
 	python3-dev \
 	libglew-dev \
+	libglfw3-dev \
 	libnlopt-dev \
 	libeigen3-dev \
-	libomesa6-dev \
+	libosmesa6-dev \
 	liburdfdom-dev \
 	libfreetype6-dev \
 	liborocos-kdl-dev \

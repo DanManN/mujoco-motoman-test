@@ -59,6 +59,7 @@ def load_scene_workspace(robot_xml, scene_json):
       <worldbody>
         <geom name="floor" size="2 2 .05" type="plane" material="grid" condim="3"/>
         <light directional="true" pos="-0.5 0.5 3" dir="0 0 -1" castshadow="false" diffuse="1 1 1"/>
+        <camera name="cam" pos="0.1 0 1.5" zaxis="1 0 0"/>
         <body name="scene" pos="0 0 0">
         </body>
         <body name="phys" pos="-0.5 0 0">
@@ -232,3 +233,8 @@ if __name__ == '__main__':
         # mujoco.mj_step(world, data)
         viewer.render()
     viewer.close()
+
+    t0 = time.time()
+    img = physics.render(camera_id=0, depth=True)
+    img = physics.render(camera_id=0, segmentation=True)
+    print(time.time() - t0)
