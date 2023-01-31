@@ -1,21 +1,4 @@
-import re
-import sys
-import json
-import glob
-import time
-
-import numpy as np
-
-import mujoco
-import mujoco_viewer
-from dm_control import mjcf
-
-import transformations as tf
-from tracikpy import TracIKSolver
-
 from init_scene import *
-from planner import Planner
-from ompl import geometric as og
 
 robot_xml = 'motoman/motoman.xml'
 assets_dir = 'motoman/meshes'
@@ -23,7 +6,8 @@ scene_json = 'scene_shelf1.json'
 
 ## Intialization
 t0 = time.time()
-world, data, viewer = init(robot_xml, assets_dir, scene_json)
+physics, viewer = init(robot_xml, assets_dir, scene_json)
+world, data = physics.model._model, physics.data._data
 qinds = get_qpos_indices(world)
 
 dt = 0.001
@@ -93,7 +77,8 @@ while viewer.is_alive:
             target = goal2
 
     data.ctrl[lctrl] = target
-    mujoco.mj_step(world, data)
+    # mujoco.mj_step(world, data)
+    physics.step()
 
     if np.linalg.norm(data.qpos[qindl] - target) < speed:
         i += 1

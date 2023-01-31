@@ -1,19 +1,8 @@
 """
 construct a motoman scene, and test the collision methods in mujoco
 """
-import re
-import os
-import sys
-import json
-import glob
-import time
-import numpy as np
 import seaborn as sb
 import matplotlib.pyplot as plt
-
-import mujoco
-import mujoco_viewer
-from dm_control import mjcf
 
 from init_scene import *
 
@@ -42,7 +31,8 @@ assets_dir = 'motoman/meshes'
 scene_json = 'scene_table1.json'
 
 gui = len(sys.argv) > 1 and sys.argv[1][0] in ('t', 'T')
-world, data, viewer = init(robot_xml, assets_dir, scene_json, gui)
+physics, viewer = init(robot_xml, assets_dir, scene_json, gui)
+world, data = physics.model._model, physics.data._data
 qinds = get_qpos_indices(world)
 ictrl = get_ctrl_indices(world)
 

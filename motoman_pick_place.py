@@ -6,16 +6,7 @@ import time
 
 import numpy as np
 
-import mujoco
-import mujoco_viewer
-from dm_control import mjcf
-
-import transformations as tf
-from tracikpy import TracIKSolver
-
 from init_scene import *
-from planner import Planner
-from ompl import geometric as og
 
 robot_xml = 'motoman/motoman.xml'
 assets_dir = 'motoman/meshes'
@@ -23,7 +14,8 @@ scene_json = 'scene_table1.json'
 
 ## Intialization
 t0 = time.time()
-world, data, viewer = init(robot_xml, assets_dir, scene_json)
+physics, viewer = init(robot_xml, assets_dir, scene_json)
+world, data = physics.model._model, physics.data._data
 qinds = get_qpos_indices(world)
 
 dt = 0.001
@@ -62,12 +54,15 @@ def get_ik(pose, qinit, max_tries=100):
     return q
 
 
+data.qpos[get_objq_indices(world, "bpick")[:3]] *= [1, -1, 1]
+mujoco.mj_step(world, data)
+
 ee_pose = tf.euler_matrix(-np.pi / 2, 0, -np.pi / 2)
-ee_pose[:3, 3] = world.body("bpick").pos - [world.geom("gpick").size[0] + 0.05, 0, 0]
+ee_pose[:3, 3] = data.qpos[get_objq_indices(world, "bpick")[:3]] - [world.geom("gpick").size[0] + 0.05, 0, 0]
 print(ee_pose)
 t0 = time.time()
 qout = get_ik(ee_pose, qinit=np.zeros(ik_solver.number_of_joints))
-ee_pose[:3, 3] = world.body("bpick").pos - [world.geom("gpick").size[0], 0, 0]
+ee_pose[:3, 3] = data.qpos[get_objq_indices(world, "bpick")[:3]] - [world.geom("gpick").size[0], 0, 0]
 qout2 = get_ik(ee_pose, qinit=qout)
 ee_pose[:3, 3] += [0, 0, 0.1]
 qout3 = get_ik(ee_pose, qinit=qout2)
@@ -131,7 +126,8 @@ while viewer.is_alive:
 
     data.ctrl[lctrl] = target
     data.ctrl[0] = suction
-    mujoco.mj_step(world, data)
+    # mujoco.mj_step(world, data)
+    physics.step()
 
     if np.linalg.norm(data.qpos[qindl] - target) < speed:
         i += 1

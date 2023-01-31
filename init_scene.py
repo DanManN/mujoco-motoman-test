@@ -5,11 +5,14 @@ import glob
 import time
 
 import numpy as np
+import transformations as tf
 
-import mujoco
 import mujoco_viewer
 from dm_control import mjcf
-import transformations as tf
+from dm_control import mujoco
+
+from planner import Planner
+from ompl import geometric as og
 from tracikpy import TracIKSolver
 
 motoman_both_arms = [
@@ -46,8 +49,6 @@ def load_scene_workspace(robot_xml, scene_json):
     if scene_dict is None:
         print("Could not read file:", scene_json)
         return
-    base_pos = scene_dict['workspace']['pos']
-    components = scene_dict['workspace']['components']
     world_model = mjcf.from_xml_string(
         """
     <mujoco model="World">
@@ -79,19 +80,18 @@ def load_scene_workspace(robot_xml, scene_json):
     """
     )
     scene_body = world_model.worldbody.body['scene']
-    # scene_body.pos = base_pos
+    scene_body.pos = scene_dict['workspace']['pos']
+    scene_body.quat = np.roll(scene_dict['workspace']['ori'], 1)
+
+    components = scene_dict['workspace']['components']
     for component_name, component in components.items():
-        shape = component['shape']
-        shape = np.array(shape)
-        component['pose']['pos'] = np.array(component['pose']['pos']) + np.array(base_pos)
-        pos = np.array(component['pose']['pos'])
-        ori = component['pose']['ori']  # x y z w
+        shape = np.array(component['shape'])
         scene_body.add(
             'geom',
             name=component_name,
             type='box',
-            pos=pos,
-            quat=ori,
+            pos=component['pose']['pos'],
+            quat=np.roll(component['pose']['ori'], 1),
             size=shape / 2,
             rgba=[1., 0.64, 0.0, 1.0],
             # gap=10,
@@ -118,13 +118,6 @@ def load_scene_workspace(robot_xml, scene_json):
     robot = mjcf.from_path(robot_xml)
     world_model.attach(robot)
     return world_model
-
-
-def init_sim(world_model, ASSETS):
-    fixed_xml_str = re.sub('-[a-f0-9]+.stl', '.stl', world_model.to_xml_string())
-    world = mujoco.MjModel.from_xml_string(fixed_xml_str, ASSETS)
-    data = mujoco.MjData(world)
-    return world, data
 
 
 def get_objq_indices(model, obj_name):
@@ -173,23 +166,34 @@ def colliding_body_pairs(contact, world):
     return pairs
 
 
+def init_sim(world_model, ASSETS):
+    fixed_xml_str = re.sub('-[a-f0-9]+.stl', '.stl', world_model.to_xml_string())
+    # world = mujoco.MjModel.from_xml_string(fixed_xml_str, ASSETS)
+    # data = mujoco.MjData(world)
+    physics = mujoco.Physics.from_xml_string(fixed_xml_str, ASSETS)
+    return physics
+
+
 def init(robot_xml, assets_dir, scene_json, gui=True):
     world_model = load_scene_workspace(robot_xml, scene_json)
     ASSETS = asset_dict(assets_dir)
     t0 = time.time()
-    world, data = init_sim(world_model, ASSETS)
+    physics = init_sim(world_model, ASSETS)
     t1 = time.time()
     print("init_sim:", t1 - t0)
-    viewer = mujoco_viewer.MujocoViewer(world, data) if gui else None
-    return world, data, viewer
+    viewer = mujoco_viewer.MujocoViewer(
+        physics.model._model, physics.data._data
+    ) if gui else None
+    return physics, viewer
 
 
 if __name__ == '__main__':
     robot_xml = 'motoman/motoman.xml'
     assets_dir = 'motoman/meshes'
-    scene_json = 'scene_shelf1.json'
+    scene_json = 'scene_table1.json'
 
-    world, data, viewer = init(robot_xml, assets_dir, scene_json)
+    physics, viewer = init(robot_xml, assets_dir, scene_json)
+    world, data = physics.model._model, physics.data._data
     qinds = get_qpos_indices(world)
     ictrl = get_ctrl_indices(world)
 
@@ -224,6 +228,7 @@ if __name__ == '__main__':
             sign *= -1
         z += 0.01 * sign
         data.ctrl[lctrl] = qout
-        mujoco.mj_step(world, data)
+        physics.step()
+        # mujoco.mj_step(world, data)
         viewer.render()
     viewer.close()

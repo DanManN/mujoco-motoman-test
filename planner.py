@@ -26,7 +26,9 @@ class Planner():
         space.setBounds(bounds)
 
         # create a simple setup object
-        ss = og.SimpleSetup(space)
+        si = ob.SpaceInformation(space)
+        si.setStateValidityCheckingResolution(0.001)
+        ss = og.SimpleSetup(si)
         ss.setStateValidityChecker(ob.StateValidityCheckerFn(self.isStateValid))
         print(ss.getSpaceInformation().settings())
 

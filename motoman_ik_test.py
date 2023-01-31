@@ -1,25 +1,11 @@
-import re
-import sys
-import json
-import glob
-import time
-
-import numpy as np
-
-import mujoco
-import mujoco_viewer
-from dm_control import mjcf
-
-import transformations as tf
-from tracikpy import TracIKSolver
-
 from init_scene import *
 
 robot_xml = 'motoman/motoman.xml'
 assets_dir = 'motoman/meshes'
 scene_json = 'scene_shelf1.json'
 
-world, data, viewer = init(robot_xml, assets_dir, scene_json)
+physics, viewer = init(robot_xml, assets_dir, scene_json)
+world, data = physics.model._model, physics.data._data
 qinds = get_qpos_indices(world)
 
 dt = 0.001
@@ -43,6 +29,7 @@ lctrl = get_ctrl_indices(world, ["sda10f/" + j for j in ik_solver.joint_names])
 print(qinds)
 while viewer.is_alive:
     data.ctrl[lctrl] = qout
-    mujoco.mj_step(world, data)
+    # mujoco.mj_step(world, data)
+    physics.step()
     viewer.render()
 viewer.close()

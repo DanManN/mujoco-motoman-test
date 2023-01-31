@@ -1,10 +1,9 @@
-git+git@github.com:mjd3/tracikpy.git
+git+https://github.com/mjd3/tracikpy.git
 pyaml
 seaborn
 dm-env
 dm-tree
 dm-control
 transformations
-mujoco
 mujoco-python-viewer
 sdformat-mjcf

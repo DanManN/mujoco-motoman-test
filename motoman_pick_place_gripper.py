@@ -1,21 +1,4 @@
-import re
-import sys
-import json
-import glob
-import time
-
-import numpy as np
-
-import mujoco
-import mujoco_viewer
-from dm_control import mjcf
-
-import transformations as tf
-from tracikpy import TracIKSolver
-
 from init_scene import *
-from planner import Planner
-from ompl import geometric as og
 
 robot_xml = 'motoman/motoman.xml'
 assets_dir = 'motoman/meshes'
@@ -34,12 +17,13 @@ attach_bd = attach_to.add(
 attach_bd.add(
     'geom', name='attach_gm', type=gm_attach.type, size=gm_attach.size, group='3'
 )
+to_attach.remove()
 t01 = time.time()
-world_a, data_a = init_sim(world_model, ASSETS)
+physics = init_sim(world_model, ASSETS)
+world_a, data_a = physics.model._model, physics.data._data
 t11 = time.time()
 print(world_a.body('sda10f/attach_bd'))
 print(world_a.geom('sda10f/attach_gm'))
-print(world_a.geom('gpick'))
 print("init_sim_attached:", t11 - t01)
 if False:
     viewer_a = mujoco_viewer.MujocoViewer(world_a, data_a)
@@ -48,7 +32,8 @@ if False:
         viewer_a.render()
     viewer_a.close()
 
-world, data, viewer = init(robot_xml, assets_dir, scene_json)
+physics, viewer = init(robot_xml, assets_dir, scene_json)
+world, data = physics.model._model, physics.data._data
 qinds = get_qpos_indices(world)
 
 dt = 0.001
@@ -77,7 +62,7 @@ def collision_attached(state):
     mujoco.mj_step1(world_a, data_a)
     for pair in colliding_body_pairs(data_a.contact, world_a):
         if pair != ('sda10f/motoman_base', 'sda10f/torso_link_b1'):
-            print(pair)
+            # print(pair)
             return False
     return True
 
@@ -170,7 +155,8 @@ while viewer.is_alive:
 
     data.ctrl[lctrl] = target
     data.ctrl[1] = grip
-    mujoco.mj_step(world, data)
+    # mujoco.mj_step(world, data)
+    physics.step()
     # print(colliding_body_pairs(data.contact, world))
 
     if np.linalg.norm(data.qpos[qindl] - target) < speed:
