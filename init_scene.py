@@ -136,7 +136,7 @@ def get_qpos_indices(model, joints=motoman_both_arms):
 
 
 def get_ctrl_indices(model, joints=motoman_both_arms):
-    ctrl_inds = np.array([model.joint(j).id for j in joints])
+    ctrl_inds = np.array([model.actuator(j.replace('joint_', '')).id for j in joints])
     return ctrl_inds
 
 
@@ -221,6 +221,14 @@ if __name__ == '__main__':
     print("ik-test:", t1 - t0, qout)
 
     lctrl = get_ctrl_indices(world, ["sda10f/" + j for j in ik_solver.joint_names])
+
+    # print(mujoco.MjModel.njnt)
+    for i in range(world.njnt):
+        # print(i, world.jnt(i))
+        for i in range(world.nu):
+            print(i, world.actuator(i))
+        stype = world.geom(world.body(world.jnt(i).bodyid[0]).geomadr[0]).type[0]
+        print(stype, int(mujoco.mjtGeom.mjGEOM_BOX))
 
     z = 1.5
     sign = 1
