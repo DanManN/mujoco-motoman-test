@@ -62,6 +62,7 @@ plan = []
 for x, y in zip(raw_plan[:-1], raw_plan[1:]):
     plan += np.linspace(x, y, int(np.linalg.norm(np.subtract(y, x)) * steps)).tolist()
 print("interped plan:", len(plan))
+plan = raw_plan
 
 ## reset positions
 data.qpos[qindl] = 0

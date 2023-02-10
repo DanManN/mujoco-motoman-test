@@ -15,15 +15,7 @@ from planner import Planner
 from ompl import geometric as og
 from tracikpy import TracIKSolver
 
-motoman_both_arms = [
-    "sda10f/torso_joint_b1",
-    "sda10f/arm_left_joint_1_s",
-    "sda10f/arm_left_joint_2_l",
-    "sda10f/arm_left_joint_3_e",
-    "sda10f/arm_left_joint_4_u",
-    "sda10f/arm_left_joint_5_r",
-    "sda10f/arm_left_joint_6_b",
-    "sda10f/arm_left_joint_7_t",
+motoman_right_arm = [
     "sda10f/arm_right_joint_1_s",
     "sda10f/arm_right_joint_2_l",
     "sda10f/arm_right_joint_3_e",
@@ -32,6 +24,22 @@ motoman_both_arms = [
     "sda10f/arm_right_joint_6_b",
     "sda10f/arm_right_joint_7_t",
 ]
+
+motoman_left_arm = [
+    "sda10f/arm_left_joint_1_s",
+    "sda10f/arm_left_joint_2_l",
+    "sda10f/arm_left_joint_3_e",
+    "sda10f/arm_left_joint_4_u",
+    "sda10f/arm_left_joint_5_r",
+    "sda10f/arm_left_joint_6_b",
+    "sda10f/arm_left_joint_7_t",
+]
+
+motoman_both_arms = motoman_left_arm + motoman_right_arm
+
+motoman_left_arm += ["sda10f/torso_joint_b1"]
+motoman_right_arm += ["sda10f/torso_joint_b1"]
+motoman_both_arms += ["sda10f/torso_joint_b1"]
 
 
 def asset_dict(assets_dir):
@@ -52,6 +60,9 @@ def load_scene_workspace(robot_xml, scene_json):
     world_model = mjcf.from_xml_string(
         """
     <mujoco model="World">
+      <option>
+        <flag warmstart="disable" />
+      </option>
       <asset>
         <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
         <material name="grid" texture="grid" texrepeat="0.5 0.5" texuniform="true" specular="0" shininess="0" reflectance="0" emission="1" />
@@ -224,11 +235,11 @@ if __name__ == '__main__':
 
     # print(mujoco.MjModel.njnt)
     for i in range(world.njnt):
-        # print(i, world.jnt(i))
-        for i in range(world.nu):
-            print(i, world.actuator(i))
-        stype = world.geom(world.body(world.jnt(i).bodyid[0]).geomadr[0]).type[0]
-        print(stype, int(mujoco.mjtGeom.mjGEOM_BOX))
+        print(i, world.jnt(i))
+    for i in range(world.nu):
+        print(i, world.actuator(i))
+    # stype = world.geom(world.body(world.jnt(i).bodyid[0]).geomadr[0]).type[0]
+    # print(stype, int(mujoco.mjtGeom.mjGEOM_BOX))
 
     z = 1.5
     sign = 1
@@ -239,6 +250,7 @@ if __name__ == '__main__':
         if z > 3 or z < 1.4:
             sign *= -1
         z += 0.01 * sign
+        data.ctrl[1] = z*50
         data.ctrl[lctrl] = qout
         physics.step()
         # mujoco.mj_step(world, data)

@@ -35,6 +35,7 @@ if False:
 physics, viewer = init(robot_xml, assets_dir, scene_json)
 world, data = physics.model._model, physics.data._data
 qinds = get_qpos_indices(world)
+qgrip = get_qpos_indices(world, ["sda10f/right_driver_joint"])
 
 dt = 0.001
 world.opt.timestep = dt
@@ -85,11 +86,11 @@ def get_ik(pose, qinit, max_tries=100):
 
 
 ee_pose = tf.euler_matrix(-np.pi / 2, -np.pi / 2, -np.pi / 2)
-ee_pose[:3, 3] = world.body("bpick").pos - [world.geom("gpick").size[0] + 0.05, 0, 0]
+ee_pose[:3, 3] = world.body("bpick").pos - [world.geom("gpick").size[0], 0, 0]
 print(ee_pose)
 t0 = time.time()
 qout = get_ik(ee_pose, qinit=np.zeros(ik_solver.number_of_joints))
-ee_pose[:3, 3] = world.body("bpick").pos - [world.geom("gpick").size[0], 0, 0]
+ee_pose[:3, 3] = world.body("bpick").pos - [0, 0, 0]
 qout2 = get_ik(ee_pose, qinit=qout)
 ee_pose[:3, 3] += [0, 0, 0.1]
 qout3 = get_ik(ee_pose, qinit=qout2)
@@ -150,8 +151,9 @@ while viewer.is_alive:
             i = 0
             plan = plan2
         if np.linalg.norm(data.qpos[qindl] - goal4) < 0.02:
-            target = goal5
             grip = 0
+            if data.qpos[qgrip] < 0.005:
+                target = goal5
 
     data.ctrl[lctrl] = target
     data.ctrl[1] = grip
