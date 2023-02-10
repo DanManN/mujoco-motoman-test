@@ -146,8 +146,15 @@ def get_qpos_indices(model, joints=motoman_both_arms):
     return qpos_inds
 
 
-def get_ctrl_indices(model, joints=motoman_both_arms):
-    ctrl_inds = np.array([model.actuator(j.replace('joint_', '')).id for j in joints])
+def get_ctrl_indices(model, joints=motoman_both_arms, repl=''):
+    ctrl_inds = np.array([model.actuator(j.replace('joint_', repl)).id for j in joints])
+    return ctrl_inds
+
+
+def get_act_indices(model, joints=motoman_both_arms, repl='v'):
+    ctrl_inds = np.array(
+        [model.actuator(j.replace('joint', repl)).actadr[0] for j in joints]
+    )
     return ctrl_inds
 
 
@@ -250,7 +257,7 @@ if __name__ == '__main__':
         if z > 3 or z < 1.4:
             sign *= -1
         z += 0.01 * sign
-        data.ctrl[1] = z*50
+        data.ctrl[1] = z * 50
         data.ctrl[lctrl] = qout
         physics.step()
         # mujoco.mj_step(world, data)
