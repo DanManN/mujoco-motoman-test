@@ -1,16 +1,25 @@
 <mujoco model="sda10f">
   <compiler angle="radian" meshdir="meshes/" autolimits="true" inertiafromgeom="true" balanceinertia="true"/>
   <default>
-    <position kp="1000" forcerange="-200 200"/>
-    <velocity kv="1750" forcerange="-250 250"/>
+    <position kp="4000" forcerange="-42 42"/>
+    <velocity kv="3000" forcerange="-42 42" ctrlrange="-2.2 2.2"/>
+    <default class="RB">
+      <position forcerange="-30 30"/>
+      <velocity forcerange="-30 30" ctrlrange="-3.4 3.4"/>
+    </default>
+    <default class="T">
+      <position forcerange="-18 18"/>
+      <velocity forcerange="-18 18" ctrlrange="-6.9 6.9"/>
+    </default>
     <default class="hidden">
       <geom group="3"/>
-      <joint armature="0.1" damping="500"/>
+      <joint armature="0.1" damping="5"/>
     </default>
     <default class="2f85">
       <mesh scale="0.001 0.001 0.001"/>
       <general biastype="affine"/>
-      <joint axis="1 0 0"/>
+      <joint axis="1 0 0" />
+      <!-- <joint axis="1 0 0" armature="0" damping="0"/> -->
       <default class="driver">
         <joint range="0 0.8" armature="0.005" damping="0.1" solimplimit="0.95 0.99 0.001"
           solreflimit="0.005 1"/>
@@ -326,48 +335,48 @@
     <position name="arm_left_2_l" joint="arm_left_joint_2_l" ctrlrange="-1.9 1.9"/>
     <position name="arm_left_3_e" joint="arm_left_joint_3_e" ctrlrange="-2.95 2.95"/>
     <position name="arm_left_4_u" joint="arm_left_joint_4_u" ctrlrange="-2.36 2.36"/>
-    <position name="arm_left_5_r" joint="arm_left_joint_5_r" ctrlrange="-3.13 3.13"/>
-    <position name="arm_left_6_b" joint="arm_left_joint_6_b" ctrlrange="-1.9 1.9"/>
-    <position name="arm_left_7_t" joint="arm_left_joint_7_t" ctrlrange="-3.13 3.13"/>
+    <position name="arm_left_5_r" joint="arm_left_joint_5_r" ctrlrange="-3.13 3.13" class="RB"/>
+    <position name="arm_left_6_b" joint="arm_left_joint_6_b" ctrlrange="-1.9 1.9" class="RB"/>
+    <position name="arm_left_7_t" joint="arm_left_joint_7_t" ctrlrange="-3.13 3.13" class="T"/>
     <position name="arm_right_1_s" joint="arm_right_joint_1_s" ctrlrange="-3.13 3.13"/>
     <position name="arm_right_2_l" joint="arm_right_joint_2_l" ctrlrange="-1.9 1.9"/>
     <position name="arm_right_3_e" joint="arm_right_joint_3_e" ctrlrange="-2.95 2.95"/>
     <position name="arm_right_4_u" joint="arm_right_joint_4_u" ctrlrange="-2.36 2.36"/>
-    <position name="arm_right_5_r" joint="arm_right_joint_5_r" ctrlrange="-3.13 3.13"/>
-    <position name="arm_right_6_b" joint="arm_right_joint_6_b" ctrlrange="-1.9 1.9"/>
-    <position name="arm_right_7_t" joint="arm_right_joint_7_t" ctrlrange="-3.13 3.13"/>
+    <position name="arm_right_5_r" joint="arm_right_joint_5_r" ctrlrange="-3.13 3.13" class="RB"/>
+    <position name="arm_right_6_b" joint="arm_right_joint_6_b" ctrlrange="-1.9 1.9" class="RB"/>
+    <position name="arm_right_7_t" joint="arm_right_joint_7_t" ctrlrange="-3.13 3.13" class="T"/>
 
-    <!-- <velocity name="v_torso_b1" joint="torso_joint_b1" /> -->
-    <!-- <velocity name="v_arm_left_1_s" joint="arm_left_joint_1_s" /> -->
-    <!-- <velocity name="v_arm_left_2_l" joint="arm_left_joint_2_l" /> -->
-    <!-- <velocity name="v_arm_left_3_e" joint="arm_left_joint_3_e" /> -->
-    <!-- <velocity name="v_arm_left_4_u" joint="arm_left_joint_4_u" /> -->
-    <!-- <velocity name="v_arm_left_5_r" joint="arm_left_joint_5_r" /> -->
-    <!-- <velocity name="v_arm_left_6_b" joint="arm_left_joint_6_b" /> -->
-    <!-- <velocity name="v_arm_left_7_t" joint="arm_left_joint_7_t" /> -->
-    <!-- <velocity name="v_arm_right_1_s" joint="arm_right_joint_1_s" /> -->
-    <!-- <velocity name="v_arm_right_2_l" joint="arm_right_joint_2_l" /> -->
-    <!-- <velocity name="v_arm_right_3_e" joint="arm_right_joint_3_e" /> -->
-    <!-- <velocity name="v_arm_right_4_u" joint="arm_right_joint_4_u" /> -->
-    <!-- <velocity name="v_arm_right_5_r" joint="arm_right_joint_5_r" /> -->
-    <!-- <velocity name="v_arm_right_6_b" joint="arm_right_joint_6_b" /> -->
-    <!-- <velocity name="v_arm_right_7_t" joint="arm_right_joint_7_t" /> -->
+    <velocity name="v_torso_b1" joint="torso_joint_b1" />
+    <velocity name="v_arm_left_1_s" joint="arm_left_joint_1_s" />
+    <velocity name="v_arm_left_2_l" joint="arm_left_joint_2_l" />
+    <velocity name="v_arm_left_3_e" joint="arm_left_joint_3_e" />
+    <velocity name="v_arm_left_4_u" joint="arm_left_joint_4_u" />
+    <velocity name="v_arm_left_5_r" joint="arm_left_joint_5_r" class="RB"/>
+    <velocity name="v_arm_left_6_b" joint="arm_left_joint_6_b" class="RB"/>
+    <velocity name="v_arm_left_7_t" joint="arm_left_joint_7_t" class="T"/>
+    <velocity name="v_arm_right_1_s" joint="arm_right_joint_1_s" />
+    <velocity name="v_arm_right_2_l" joint="arm_right_joint_2_l" />
+    <velocity name="v_arm_right_3_e" joint="arm_right_joint_3_e" />
+    <velocity name="v_arm_right_4_u" joint="arm_right_joint_4_u" />
+    <velocity name="v_arm_right_5_r" joint="arm_right_joint_5_r" class="RB"/>
+    <velocity name="v_arm_right_6_b" joint="arm_right_joint_6_b" class="RB"/>
+    <velocity name="v_arm_right_7_t" joint="arm_right_joint_7_t" class="T"/>
 
-    <intvelocity kp="200" forcerange="-100 100" name="torso_v_b1" joint="torso_joint_b1" actrange="-1.58 1.58"/>
-    <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_1_s" joint="arm_left_joint_1_s" actrange="-3.13 3.13"/>
-    <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_2_l" joint="arm_left_joint_2_l" actrange="-1.9 1.9"/>
-    <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_3_e" joint="arm_left_joint_3_e" actrange="-2.95 2.95"/>
-    <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_4_u" joint="arm_left_joint_4_u" actrange="-2.36 2.36"/>
-    <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_5_r" joint="arm_left_joint_5_r" actrange="-3.13 3.13"/>
-    <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_6_b" joint="arm_left_joint_6_b" actrange="-1.9 1.9"/>
-    <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_7_t" joint="arm_left_joint_7_t" actrange="-3.13 3.13"/>
-    <intvelocity kp="200" forcerange="-100 100" name="arm_right_v_1_s" joint="arm_right_joint_1_s" actrange="-3.13 3.13"/>
-    <intvelocity kp="200" forcerange="-100 100" name="arm_right_v_2_l" joint="arm_right_joint_2_l" actrange="-1.9 1.9"/>
-    <intvelocity kp="200" forcerange="-100 100" name="arm_right_v_3_e" joint="arm_right_joint_3_e" actrange="-2.95 2.95"/>
-    <intvelocity kp="200" forcerange="-100 100" name="arm_right_v_4_u" joint="arm_right_joint_4_u" actrange="-2.36 2.36"/>
-    <intvelocity kp="200" forcerange="-100 100" name="arm_right_v_5_r" joint="arm_right_joint_5_r" actrange="-3.13 3.13"/>
-    <intvelocity kp="200" forcerange="-100 100" name="arm_right_v_6_b" joint="arm_right_joint_6_b" actrange="-1.9 1.9"/>
-    <intvelocity kp="200" forcerange="-100 100" name="arm_right_v_7_t" joint="arm_right_joint_7_t" actrange="-3.13 3.13"/>
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="torso_v_b1" joint="torso_joint_b1" actrange="-1.58 1.58"/> -->
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_1_s" joint="arm_left_joint_1_s" actrange="-3.13 3.13"/> -->
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_2_l" joint="arm_left_joint_2_l" actrange="-1.9 1.9"/> -->
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_3_e" joint="arm_left_joint_3_e" actrange="-2.95 2.95"/> -->
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_4_u" joint="arm_left_joint_4_u" actrange="-2.36 2.36"/> -->
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_5_r" joint="arm_left_joint_5_r" actrange="-3.13 3.13"/> -->
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_6_b" joint="arm_left_joint_6_b" actrange="-1.9 1.9"/> -->
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_7_t" joint="arm_left_joint_7_t" actrange="-3.13 3.13"/> -->
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_right_v_1_s" joint="arm_right_joint_1_s" actrange="-3.13 3.13"/> -->
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_right_v_2_l" joint="arm_right_joint_2_l" actrange="-1.9 1.9"/> -->
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_right_v_3_e" joint="arm_right_joint_3_e" actrange="-2.95 2.95"/> -->
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_right_v_4_u" joint="arm_right_joint_4_u" actrange="-2.36 2.36"/> -->
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_right_v_5_r" joint="arm_right_joint_5_r" actrange="-3.13 3.13"/> -->
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_right_v_6_b" joint="arm_right_joint_6_b" actrange="-1.9 1.9"/> -->
+    <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_right_v_7_t" joint="arm_right_joint_7_t" actrange="-3.13 3.13"/> -->
 
   </actuator>
 </mujoco>
