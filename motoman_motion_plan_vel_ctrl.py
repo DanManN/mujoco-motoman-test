@@ -13,6 +13,11 @@ t0 = time.time()
 physics, viewer = init(robot_xml, assets_dir, scene_json)
 world, data = physics.model._model, physics.data._data
 
+while viewer.is_alive:
+    mujoco.mj_forward(world, data)
+    viewer.render()
+viewer.close()
+
 viewer = mujoco_viewer.MujocoViewer(world, data)
 
 qinds = get_qpos_indices(world)
@@ -45,8 +50,9 @@ t1 = time.time()
 print("total init:", t1 - t0)
 
 ## IK for target position
+mocap_id = world.body("btarget").mocapid
 ee_pose = tf.euler_matrix(-np.pi / 2, 0, -np.pi / 2)
-ee_pose[:3, 3] = world.body("btarget").pos
+ee_pose[:3, 3] = data.mocap_pos[mocap_id]
 print(ee_pose)
 t0 = time.time()
 qout = ik_solver.ik(ee_pose, qinit=np.zeros(ik_solver.number_of_joints))
