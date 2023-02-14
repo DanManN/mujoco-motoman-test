@@ -1,8 +1,8 @@
 <mujoco model="sda10f">
   <compiler angle="radian" meshdir="meshes/" autolimits="true" inertiafromgeom="true" balanceinertia="true"/>
   <default>
-    <position kp="5500" forcerange="-42 42"/>
-    <velocity kv="4500" forcerange="-42 42" ctrlrange="-2.2 2.2"/>
+    <position kp="10000000000000000" forcerange="-42 42"/>
+    <velocity kv="10000000000000" forcerange="-42 42" ctrlrange="-2.2 2.2"/>
     <default class="RB">
       <position forcerange="-30 30"/>
       <velocity forcerange="-30 30" ctrlrange="-3.4 3.4"/>
@@ -13,7 +13,7 @@
     </default>
     <default class="hidden">
       <geom group="3"/>
-      <joint armature="0.1" damping="5"/>
+      <joint armature="0.1" damping="50"/>
     </default>
     <default class="2f85">
       <mesh scale="0.001 0.001 0.001"/>
