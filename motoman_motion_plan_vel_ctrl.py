@@ -12,15 +12,9 @@ scene_json = 'scene_shelf1.json'
 t0 = time.time()
 physics, viewer = init(robot_xml, assets_dir, scene_json)
 world, data = physics.model._model, physics.data._data
-
-while viewer.is_alive:
-    mujoco.mj_forward(world, data)
-    viewer.render()
-viewer.close()
-
-viewer = mujoco_viewer.MujocoViewer(world, data)
-
 qinds = get_qpos_indices(world)
+pctrls = get_ctrl_indices(world)
+vctrls = get_ctrl_indices(world, repl='v_')
 
 dt = 0.001
 world.opt.timestep = dt
@@ -30,10 +24,19 @@ ik_solver = TracIKSolver(
     "motoman_left_ee",
 )
 lctrl = get_ctrl_indices(world, ["sda10f/" + j for j in ik_solver.joint_names])
-vctrl = get_ctrl_indices(world, ["sda10f/v_" + j for j in ik_solver.joint_names])
-# vctrl = get_ctrl_indices(world, ["sda10f/" + j for j in ik_solver.joint_names], 'v_')
+vctrl = get_ctrl_indices(world, ["sda10f/" + j for j in ik_solver.joint_names], 'v_')
 # actrl = get_act_indices(world, ["sda10f/" + j for j in ik_solver.joint_names])
 qindl = get_qpos_indices(world, ["sda10f/" + j for j in ik_solver.joint_names])
+
+init = data.qpos[qinds]
+while viewer.is_alive:
+    data.ctrl[pctrls] = init
+    data.ctrl[vctrls] = 0
+    mujoco.mj_step(world, data)
+    viewer.render()
+viewer.close()
+
+viewer = mujoco_viewer.MujocoViewer(world, data)
 
 ll = world.jnt_range[lctrl, 0]
 ul = world.jnt_range[lctrl, 1]
@@ -84,16 +87,13 @@ pc_acc = ta_constraint.JointAccelerationConstraint(alims)
 instance = ta_algo.TOPPRA([pc_vel, pc_acc], path)
 jnt_traj = instance.compute_trajectory()
 ts_sample = np.linspace(0, jnt_traj.duration, int(jnt_traj.duration / dt))
-
-print('duration: ', jnt_traj.duration)
 qs_sample = jnt_traj(ts_sample)
 qds_sample = jnt_traj(ts_sample, 1)
 qdds_sample = jnt_traj(ts_sample, 2)
 pos_traj = qs_sample.tolist()
 vel_traj = qds_sample.tolist()
-# pos_traj.append(jnt_traj(jnt_traj.duration))
-# vel_traj.append(jnt_traj(jnt_traj.duration, 1))
-# vel_traj.append([0] * len(vel_traj[0]))
+print('duration: ', jnt_traj.duration)
+print('positions: ', qs_sample.shape, qs_sample)
 
 ## reset positions
 data.qpos[qindl] = 0
@@ -106,11 +106,10 @@ planned_traj = []
 real_traj = []
 time_ax = []
 while viewer.is_alive:
-    # data.ctrl[lctrl] = pos_traj[i]
-    # data.act[actrl] = pos_traj[i]
-    # data.ctrl[vctrl] = vel_traj[i]
-    q = jnt_traj(t)
-    dq = jnt_traj(t, 1)
+    # q = jnt_traj(t)
+    # dq = jnt_traj(t, 1)
+    q = pos_traj[i]
+    dq = vel_traj[i]
     data.ctrl[lctrl] = q
     data.ctrl[vctrl] = dq
     mujoco.mj_step(world, data)
@@ -124,6 +123,8 @@ while viewer.is_alive:
         time_ax.append(t - dt)
     if i < len(ts_sample) - 1:
         i += 1
+    else:
+        print(q, dq)
 
     viewer.render()
 

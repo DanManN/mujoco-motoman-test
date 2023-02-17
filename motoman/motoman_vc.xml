@@ -138,7 +138,7 @@
                       <geom pos="8.082e-09 -6.97135e-07 -0.129901" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0 0 1 1" mesh="suction_cup_v"/>
                       <geom pos="8.082e-09 -6.97135e-07 -0.129901" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" rgba="0 0 1 1" mesh="suction_cup"/>
                       <body name="EE_left" pos="0 0 -0.21" euler="0 0 0">
-                        <geom type="box" size="0.02 0.02 0.01" group="1" margin="0.02" gap="0.02" pos="0 0 -0.005" mass="0.00001"/>
+                        <geom type="box" size="0.02 0.02 0.01" group="1" margin="0.02" gap="0.02" pos="0 0 0.005" mass="0.00001"/>
                       </body>
                     </body>
                   </body>
@@ -346,21 +346,21 @@
     <position name="arm_right_6_b" joint="arm_right_joint_6_b" ctrlrange="-1.9 1.9" class="RB"/>
     <position name="arm_right_7_t" joint="arm_right_joint_7_t" ctrlrange="-3.13 3.13" class="T"/>
 
-    <velocity name="v_torso_b1" joint="torso_joint_b1" />
-    <velocity name="v_arm_left_1_s" joint="arm_left_joint_1_s" />
-    <velocity name="v_arm_left_2_l" joint="arm_left_joint_2_l" />
-    <velocity name="v_arm_left_3_e" joint="arm_left_joint_3_e" />
-    <velocity name="v_arm_left_4_u" joint="arm_left_joint_4_u" />
-    <velocity name="v_arm_left_5_r" joint="arm_left_joint_5_r" class="RB"/>
-    <velocity name="v_arm_left_6_b" joint="arm_left_joint_6_b" class="RB"/>
-    <velocity name="v_arm_left_7_t" joint="arm_left_joint_7_t" class="T"/>
-    <velocity name="v_arm_right_1_s" joint="arm_right_joint_1_s" />
-    <velocity name="v_arm_right_2_l" joint="arm_right_joint_2_l" />
-    <velocity name="v_arm_right_3_e" joint="arm_right_joint_3_e" />
-    <velocity name="v_arm_right_4_u" joint="arm_right_joint_4_u" />
-    <velocity name="v_arm_right_5_r" joint="arm_right_joint_5_r" class="RB"/>
-    <velocity name="v_arm_right_6_b" joint="arm_right_joint_6_b" class="RB"/>
-    <velocity name="v_arm_right_7_t" joint="arm_right_joint_7_t" class="T"/>
+    <velocity name="torso_v_b1" joint="torso_joint_b1" />
+    <velocity name="arm_left_v_1_s" joint="arm_left_joint_1_s" />
+    <velocity name="arm_left_v_2_l" joint="arm_left_joint_2_l" />
+    <velocity name="arm_left_v_3_e" joint="arm_left_joint_3_e" />
+    <velocity name="arm_left_v_4_u" joint="arm_left_joint_4_u" />
+    <velocity name="arm_left_v_5_r" joint="arm_left_joint_5_r" class="RB"/>
+    <velocity name="arm_left_v_6_b" joint="arm_left_joint_6_b" class="RB"/>
+    <velocity name="arm_left_v_7_t" joint="arm_left_joint_7_t" class="T"/>
+    <velocity name="arm_right_v_1_s" joint="arm_right_joint_1_s" />
+    <velocity name="arm_right_v_2_l" joint="arm_right_joint_2_l" />
+    <velocity name="arm_right_v_3_e" joint="arm_right_joint_3_e" />
+    <velocity name="arm_right_v_4_u" joint="arm_right_joint_4_u" />
+    <velocity name="arm_right_v_5_r" joint="arm_right_joint_5_r" class="RB"/>
+    <velocity name="arm_right_v_6_b" joint="arm_right_joint_6_b" class="RB"/>
+    <velocity name="arm_right_v_7_t" joint="arm_right_joint_7_t" class="T"/>
 
     <!-- <intvelocity kp="200" forcerange="-100 100" name="torso_v_b1" joint="torso_joint_b1" actrange="-1.58 1.58"/> -->
     <!-- <intvelocity kp="200" forcerange="-100 100" name="arm_left_v_1_s" joint="arm_left_joint_1_s" actrange="-3.13 3.13"/> -->
