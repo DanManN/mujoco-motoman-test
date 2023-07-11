@@ -1,0 +1,23 @@
+<mujoco model="World">
+  <option>
+    <flag warmstart="disable" />
+  </option>
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
+    <material name="grid" texture="grid" texrepeat="0.5 0.5" texuniform="true" specular="0" shininess="0" reflectance="0" emission="1" />
+    <mesh name="dyn_mesh" file="meshes/TEMP.obj"/>
+    <!-- <mesh name="airplane" file="meshes/airplane.obj"/> -->
+  </asset>
+  <worldbody>
+    <geom name="floor" size="2 2 .05" type="plane" material="grid" condim="3"/>
+    <light directional="true" pos="-0.5 0.5 3" dir="0 0 -1" castshadow="false" diffuse="1 1 1"/>
+    <body name="body_cam" pos="0.4 0 1.1" xyaxes="0 -1 0 0 0 1" mocap="true">
+      <camera name="cam" fovy="90"/>
+      <geom name="geom_cam" size="0.04 0.04 0.01" type="box" rgba="0 0 0 1" contype="2" conaffinity="2"/>
+    </body>
+    <body name="mesh_body" pos="0 0 1">
+      <freejoint/>
+      <geom name="mesh_geom" type="mesh" mesh="dyn_mesh"/>
+    </body>
+  </worldbody>
+</mujoco>
