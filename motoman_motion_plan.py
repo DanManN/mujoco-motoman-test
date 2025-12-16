@@ -6,8 +6,7 @@ scene_json = 'scene_shelf1.json'
 
 ## Intialization
 t0 = time.time()
-physics, viewer = init(robot_xml, assets_dir, scene_json)
-world, data = physics.model._model, physics.data._data
+world, data, viewer = init(robot_xml, assets_dir, scene_json)
 qinds = get_qpos_indices(world)
 
 dt = 0.001
@@ -78,8 +77,7 @@ while viewer.is_alive:
             target = goal2
 
     data.ctrl[lctrl] = target
-    # mujoco.mj_step(world, data)
-    physics.step()
+    mujoco.mj_step(world, data)
 
     if np.linalg.norm(data.qpos[qindl] - target) < speed:
         i += 1

@@ -10,8 +10,8 @@ scene_json = 'scene_shelf1.json'
 
 ## Intialization
 t0 = time.time()
-physics, viewer = init(robot_xml, assets_dir, scene_json)
-world, data = physics.model._model, physics.data._data
+world, data, viewer = init(robot_xml, assets_dir, scene_json)
+# world, data = physics.model._model, physics.data._data
 qinds = get_qpos_indices(world)
 pctrls = get_ctrl_indices(world)
 vctrls = get_ctrl_indices(world, repl='v_')

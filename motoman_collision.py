@@ -31,8 +31,8 @@ assets_dir = 'motoman/meshes'
 scene_json = 'scene_table1.json'
 
 gui = len(sys.argv) > 1 and sys.argv[1][0] in ('t', 'T')
-physics, viewer = init(robot_xml, assets_dir, scene_json, gui)
-world, data = physics.model._model, physics.data._data
+world, data, viewer = init(robot_xml, assets_dir, scene_json, gui)
+# world, data = physics.model._model, physics.data._data
 qinds = get_qpos_indices(world)
 ictrl = get_ctrl_indices(world)
 
@@ -40,6 +40,8 @@ ictrl = get_ctrl_indices(world)
 world.jnt_range
 ll = world.jnt_range[ictrl, 0]
 ul = world.jnt_range[ictrl, 1]
+print(ll)
+print(ul)
 
 num_samples = 1000
 rand_joints = np.random.uniform(ll, ul, size=[num_samples] + list(ll.shape))

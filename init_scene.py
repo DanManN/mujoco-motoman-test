@@ -11,9 +11,9 @@ import mujoco_viewer
 from dm_control import mjcf
 from dm_control import mujoco
 
-from planner import Planner
-from ompl import geometric as og
 from tracikpy import TracIKSolver
+
+from planner import Planner
 
 motoman_right_arm = [
     "sda10f/arm_right_joint_1_s",
@@ -147,7 +147,9 @@ def get_qpos_indices(model, joints=motoman_both_arms):
 
 
 def get_ctrl_indices(model, joints=motoman_both_arms, repl=''):
-    ctrl_inds = np.array([model.actuator(j.replace('joint_', repl)).id for j in joints])
+    ctrl_inds = np.array(
+        [model.actuator(j.replace('joint_', repl)).id for j in joints]
+    )
     return ctrl_inds
 
 
@@ -189,24 +191,24 @@ def colliding_body_pairs(contact, world):
 
 
 def init_sim(world_model, ASSETS):
-    fixed_xml_str = re.sub('-[a-f0-9]+.stl', '.stl', world_model.to_xml_string())
-    # world = mujoco.MjModel.from_xml_string(fixed_xml_str, ASSETS)
-    # data = mujoco.MjData(world)
-    physics = mujoco.Physics.from_xml_string(fixed_xml_str, ASSETS)
-    return physics
+    fixed_xml_str = re.sub(
+        '-[a-f0-9]+.stl', '.stl', world_model.to_xml_string()
+    )
+    world = mujoco.MjModel.from_xml_string(fixed_xml_str, ASSETS)
+    data = mujoco.MjData(world)
+    # physics = mujoco.Physics.from_xml_string(fixed_xml_str, ASSETS)
+    return world, data
 
 
 def init(robot_xml, assets_dir, scene_json, gui=True):
     world_model = load_scene_workspace(robot_xml, scene_json)
     ASSETS = asset_dict(assets_dir)
     t0 = time.time()
-    physics = init_sim(world_model, ASSETS)
+    world, data = init_sim(world_model, ASSETS)
     t1 = time.time()
     print("init_sim:", t1 - t0)
-    viewer = mujoco_viewer.MujocoViewer(
-        physics.model._model, physics.data._data
-    ) if gui else None
-    return physics, viewer
+    viewer = mujoco_viewer.MujocoViewer(world, data) if gui else None
+    return world, data, viewer
 
 
 if __name__ == '__main__':
@@ -214,8 +216,8 @@ if __name__ == '__main__':
     assets_dir = 'motoman/meshes'
     scene_json = 'scene_table1.json'
 
-    physics, viewer = init(robot_xml, assets_dir, scene_json)
-    world, data = physics.model._model, physics.data._data
+    world, data, viewer = init(robot_xml, assets_dir, scene_json)
+    # world, data = physics.model._model, physics.data._data
     qinds = get_qpos_indices(world)
     ictrl = get_ctrl_indices(world)
 
@@ -238,7 +240,9 @@ if __name__ == '__main__':
     t1 = time.time()
     print("ik-test:", t1 - t0, qout)
 
-    lctrl = get_ctrl_indices(world, ["sda10f/" + j for j in ik_solver.joint_names])
+    lctrl = get_ctrl_indices(
+        world, ["sda10f/" + j for j in ik_solver.joint_names]
+    )
 
     # print(mujoco.MjModel.njnt)
     for i in range(world.njnt):
@@ -259,7 +263,7 @@ if __name__ == '__main__':
         z += 0.01 * sign
         data.ctrl[1] = z * 50
         data.ctrl[lctrl] = qout
-        physics.step()
-        # mujoco.mj_step(world, data)
+        # physics.step()
+        mujoco.mj_step(world, data)
         viewer.render()
     viewer.close()

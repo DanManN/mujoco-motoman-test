@@ -7,6 +7,7 @@ import time
 import numpy as np
 
 from init_scene import *
+from ompl import geometric as og
 
 robot_xml = 'motoman/motoman.xml'
 assets_dir = 'motoman/meshes'
@@ -14,8 +15,8 @@ scene_json = 'scene_table1.json'
 
 ## Intialization
 t0 = time.time()
-physics, viewer = init(robot_xml, assets_dir, scene_json)
-world, data = physics.model._model, physics.data._data
+world, data, viewer = init(robot_xml, assets_dir, scene_json)
+# world, data = physics.model._model, physics.data._data
 qinds = get_qpos_indices(world)
 
 dt = 0.001
@@ -58,11 +59,13 @@ data.qpos[get_objq_indices(world, "bpick")[:3]] *= [1, -1, 1]
 mujoco.mj_step(world, data)
 
 ee_pose = tf.euler_matrix(-np.pi / 2, 0, -np.pi / 2)
-ee_pose[:3, 3] = data.qpos[get_objq_indices(world, "bpick")[:3]] - [world.geom("gpick").size[0] + 0.05, 0, 0]
+ee_pose[:3, 3] = data.qpos[get_objq_indices(world, "bpick")[:3]
+                           ] - [world.geom("gpick").size[0] + 0.05, 0, 0]
 print(ee_pose)
 t0 = time.time()
 qout = get_ik(ee_pose, qinit=np.zeros(ik_solver.number_of_joints))
-ee_pose[:3, 3] = data.qpos[get_objq_indices(world, "bpick")[:3]] - [world.geom("gpick").size[0], 0, 0]
+ee_pose[:3, 3] = data.qpos[get_objq_indices(world, "bpick")[:3]
+                           ] - [world.geom("gpick").size[0], 0, 0]
 qout2 = get_ik(ee_pose, qinit=qout)
 ee_pose[:3, 3] += [0, 0, 0.1]
 qout3 = get_ik(ee_pose, qinit=qout2)
@@ -92,11 +95,13 @@ speed = 0.1
 steps = 1.0 / speed
 plan = []
 for x, y in zip(raw_plan[:-1], raw_plan[1:]):
-    plan += np.linspace(x, y, int(np.linalg.norm(np.subtract(y, x)) * steps)).tolist()
+    plan += np.linspace(x, y,
+                        int(np.linalg.norm(np.subtract(y, x)) * steps)).tolist()
 print("interped plan:", len(plan))
 plan2 = []
 for x, y in zip(raw_plan2[:-1], raw_plan2[1:]):
-    plan2 += np.linspace(x, y, int(np.linalg.norm(np.subtract(y, x)) * steps)).tolist()
+    plan2 += np.linspace(x, y, int(np.linalg.norm(np.subtract(y, x)) * steps
+                                   )).tolist()
 print("interped plan2:", len(plan2))
 
 ## reset positions
@@ -126,8 +131,8 @@ while viewer.is_alive:
 
     data.ctrl[lctrl] = target
     data.ctrl[0] = suction
-    # mujoco.mj_step(world, data)
-    physics.step()
+    mujoco.mj_step(world, data)
+    # physics.step()
 
     if np.linalg.norm(data.qpos[qindl] - target) < speed:
         i += 1
