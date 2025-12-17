@@ -85,10 +85,14 @@ goal4 = qout4
 goal5 = qout5
 print(start, goal)
 t0 = time.time()
-raw_plan = planner.plan(start, goal, 5, og.RRTConnect)
-raw_plan2 = planner.plan(goal3, goal4, 5, og.RRTConnect)
+raw_plan = planner.plan(start, goal, 10, og.RRTConnect)
+raw_plan2 = planner.plan(goal3, goal4, 10, og.RRTConnect)
 t1 = time.time()
 print("motion plan:", t1 - t0, len(raw_plan))
+if len(raw_plan) == 0:
+    raw_plan = [start, goal]
+if len(raw_plan2) == 0:
+    raw_plan2 = [goal3, goal4]
 
 speed = 0.1
 ## interpolate plan

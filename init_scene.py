@@ -84,11 +84,11 @@ def load_scene_workspace(robot_xml, scene_json):
           <geom name="gobs" size="0.12" type="sphere" rgba=".9 .1 .1 1"/>
         </body>
         <body name="btarget" mocap="true" pos="0.7 0.3 1.0">
-          <geom name="gtarget" size="0.02" type="sphere" rgba=".1 .9 .1 1" contype="2" conaffinity="2"/>
+          <geom name="gtarget" size="0.02" type="sphere" rgba=".1 .9 .1 1" contype="0" conaffinity="0"/>
         </body>
         <body name="bpick" pos="0.8 -0.3 1.05">
           <freejoint/>
-          <geom name="gpick" size=".03 .03 .03" type="box" rgba=".5 .1 .5 1" mass="0.05" friction="0.5"/>
+          <geom name="gpick" size=".03 .03 .03" type="box" rgba=".5 .1 .5 1" mass="0.001" contype="3" conaffinity="3" />
         </body>
       </worldbody>
     </mujoco>

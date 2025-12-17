@@ -1,4 +1,7 @@
 from init_scene import *
+from ompl import geometric as og
+
+
 
 robot_xml = 'motoman/motoman.xml'
 assets_dir = 'motoman/meshes'

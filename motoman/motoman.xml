@@ -3,7 +3,7 @@
   <default>
     <position kp="3500" forcerange="-300 300"/>
     <default class="hidden">
-      <geom group="3"/>
+      <geom group="3" contype="0" conaffinity="0"/>
       <joint armature="0.1" damping="500"/>
     </default>
     <default class="2f85">
@@ -28,7 +28,7 @@
         <geom type="mesh" contype="0" conaffinity="0" group="1"/>
       </default>
       <default class="collision">
-        <geom type="mesh" group="3"/>
+        <geom group="3" contype="0" conaffinity="0"/>
         <default class="pad_box1">
           <geom mass="0" type="box" pos="0 -0.0026 0.028125" size="0.011 0.004 0.009375"
             friction="0.7" solimp="0.95 0.99 0.001" solref="0.004 1" priority="1"
@@ -124,11 +124,11 @@
                       <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0 0 1 1" mesh="motoman_axis_t_v"/>
                       <geom type="mesh" rgba="0 0 1 1" mesh="motoman_axis_t"/>
                       <geom pos="0 0 -0.035" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0 0 1 1" mesh="base_link_v"/>
-                      <geom pos="0 0 -0.035" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" rgba="0 0 1 1" mesh="base_link"/>
+                      <geom pos="0 0 -0.035" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" rgba="0 0 1 1" mesh="base_link" contype="2" conaffinity="2"/>
                       <geom pos="8.082e-09 -6.97135e-07 -0.129901" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0 0 1 1" mesh="suction_cup_v"/>
-                      <geom pos="8.082e-09 -6.97135e-07 -0.129901" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" rgba="0 0 1 1" mesh="suction_cup"/>
+                      <geom pos="8.082e-09 -6.97135e-07 -0.129901" quat="-2.1291e-08 0.00579629 -0.999983 3.67314e-06" type="mesh" rgba="0 0 1 1" mesh="suction_cup" contype="2" conaffinity="2"/>
                       <body name="EE_left" pos="0 0 -0.21" euler="0 0 0">
-                        <geom type="box" size="0.02 0.02 0.01" group="1" margin="0.02" gap="0.02" pos="0 0 -0.005" mass="0.00001"/>
+                        <geom type="box" contype="2" conaffinity="2" size="0.02 0.02 0.01" group="1" margin="0.02" gap="0.02" pos="0 0 -0.005" mass="1"/>
                       </body>
                     </body>
                   </body>
@@ -309,7 +309,7 @@
   </equality>
 
   <actuator>
-    <adhesion name="suction" body="EE_left" ctrlrange="0 1" gain="80"/>
+    <adhesion name="suction" body="EE_left" ctrlrange="0 1" gain="2"/>
       <!--
         The general actuator below is a customized position actuator (with some damping) where
         gainprm[0] != kp (see http://mujoco.org/book/modeling.html#position).
