@@ -60,8 +60,8 @@ def load_scene_workspace(robot_xml, scene_json):
     world_model = mjcf.from_xml_string(
         """
     <mujoco model="World">
-      <option>
-        <flag warmstart="disable" />
+      <option integrator="implicitfast" cone="elliptic" solver="CG" noslip_iterations="2">
+        <flag warmstart="disable" multiccd="enable"/>
       </option>
       <asset>
         <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
